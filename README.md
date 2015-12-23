@@ -15,12 +15,13 @@ No framework was used to build this project, but the MVC architecture was obviou
 
 Perform create, read, update and delete [CRUD](https://en.wikipedia.org/wiki/Create,_read,_update_and_delete). This layer is divided into multiple classes.
 Several packages are used to implement this layer : 
-* Database : implements the basic layer to perform interact with the database
+* Database : implements the basic layer to interact with the database
 
 
 ### Business 
 
 All logic which is tied to the GeomApp is located in this layer.
+
 The packages to refer to are :
 * **model** package which implements basic types of geometric shapes (Rectangular, Trapezoid, Square, Rhombus ,etc)
 
