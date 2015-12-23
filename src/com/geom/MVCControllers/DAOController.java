@@ -7,7 +7,11 @@ import java.util.ArrayList;
 import com.geom.database.DAOFactory;
 import com.geom.model.Figure;
 import com.geom.MVCviews.Board;
-
+/**
+ * Implements the interactions between the views and the DAO classes
+ * @author Dasha
+ *
+ */
 public class DAOController {
 	public static Figure searchFigure(String id){
 		return DAOFactory.getFigureDAO().find(OutputUser.idSaisi(id));

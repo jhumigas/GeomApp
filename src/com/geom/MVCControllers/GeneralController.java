@@ -6,7 +6,12 @@ import com.geom.MVCviews.GeneralView;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
+/**
+ * This class manages the User Interface
+ * It is the link betwen the view and the model
+ * @author Dasha
+ *
+ */
 public class GeneralController {
 	private Model model;
 	private GeneralView view;

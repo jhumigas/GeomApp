@@ -8,15 +8,32 @@ import java.util.ArrayList;
 
 import com.geom.model.Figure;
 
+/**
+ * This class intends to create the layers to interact with database.
+ * @author Dasha
+ *
+ */
 public class DAOFactory {
 	protected static final Connection conn = GeomAppConnection.getInstance();
 	
+	/**
+	 * Instantiate FigureDAO
+	 * @return
+	 */
 	public static DAO<Figure> getFigureDAO(){
 		return new FigureDAO(conn);
 	}
+	/**
+	 * Instantiate LongueurDAO
+	 * @return
+	 */
 	public static DAO<Double> getLongueurDAO(){
 		return new LongueurDAO(conn);
 	}
+	/**
+	 * Instantiate Point2DDAO
+	 * @return
+	 */
 	public static DAO<Point2D> getPoint2DDAO(){
 		return new Point2DDAO(conn);
 	}

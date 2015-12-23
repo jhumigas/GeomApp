@@ -5,7 +5,11 @@ import java.util.ArrayList;
 
 import com.geom.model.Factory;
 import com.geom.model.Figure;
-
+/**
+ * This class deals with the user inputs e.g when providing coordinates
+ * @author Dasha
+ *
+ */
 public class OutputUser {
 	public static Point2D traduction(String coordonnee){
 		//traduction des coordonnees saisies en points

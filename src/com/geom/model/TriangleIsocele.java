@@ -1,7 +1,12 @@
 package com.geom.model;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
-
+/**
+ * Implements Isosceles triangle
+ * An isosceles triangle has two sides of equal length
+ * @author Dasha
+ *
+ */
 public class TriangleIsocele extends Triangle{
 	
 	public TriangleIsocele(){

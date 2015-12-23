@@ -13,7 +13,13 @@ import java.awt.event.MouseListener;
 import java.awt.geom.GeneralPath;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
-
+/**
+ * Implements the 'Board' where the geometric shapes is drawn 
+ * The user can select a point a reset it
+ * The Shape is updated everytime a point is added, reset or deleted
+ * @author Dasha
+ *
+ */
 public class Board extends JPanel implements MouseListener{
 	/**
 	 * 

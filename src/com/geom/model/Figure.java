@@ -2,21 +2,49 @@ package com.geom.model;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 
+/**
+ * This class implements the most basic shapes, without any constraints regarding number of points, lengths
+ * @author Dasha
+ *
+ */
 public class Figure{
+	/**
+	 * A geometric is here defined by a list of points
+	 */
 	protected ArrayList<Point2D> points;
+	/**
+	 * Class to instantiate a new figure without any provided set of  points
+	 */
 	public Figure(){
 		ArrayList<Point2D> point = new ArrayList<Point2D>();
 		this.points= point;
 	}
+	/**
+	 * Overloading, to accept the instantiation of a figure with a list of points
+	 * @param points
+	 */
 	public Figure(ArrayList<Point2D> points){
 		this.points=points;
 	}
+	/**
+	 * 
+	 * @return the ArrayList of points forming the geometric figure
+	 */
 	public ArrayList<Point2D> getPoints(){
 		return this.points;
 	}
+	/**
+	 * Sets the ArrayList of points forming the geometric shape
+	 * @param points
+	 */
 	public void setPoints(ArrayList<Point2D> points){
 		this.points=points;
 	}
+	/**
+	 * Adds a point to the shape
+	 * @param x abscissa of the new point to be added
+	 * @param y ordinate of the new point to be added
+	 */
 	public void addPointXY(double x,double y){
 		for(int i=0;i< this.numpoints(); i++){
 			if(this.points.get(i).getX()==x && this.points.get(i).getY()==y)
@@ -24,15 +52,26 @@ public class Figure{
 		}
 		this.points.add(new Point2D.Double(x, y));
 	}
+	/**
+	 * 
+	 * @return the number of points forming a shape
+	 */
 	public int numpoints(){
 		//renvoie le nombre de points de la figure
 		return this.points.size();
 	}
+	/**
+	 * 
+	 * @return the type of geometric shapes i.e Quadrilateral, Square, etc
+	 */
 	public String getType(){
 		return "Figure";
 	}
-
-
+	
+	/**
+	 * 
+	 * @return an array of lengths(distance) of the shape
+	 */
 	public double[] longueurs(){
 		//renvoie un tableau contenant les longueurs des cotes
 		//renvoie 0 par defaut pour le point
@@ -53,12 +92,21 @@ public class Figure{
 			
 		}
 	}
+	/**
+	 * Calculates the perimeter of a geometric shape
+	 * A perimeter is a path that surrounds a two-dimensional shape.
+	 * @return the value of perimeter
+	 */
 	public double perimetre(){
 		double perimetre = 0;
 		for(double longueur:this.longueurs())
 			perimetre+=longueur;
 		return perimetre;
 	}
+	/**
+	 * Calculates the surface area of a geometric shape
+	 * @return the surface area of a geometric shape
+	 */
 	public double surface(){
 		//renvoie la surface de la figure
 		// renvoie 0 si la figure a moins de 3 points
@@ -72,6 +120,10 @@ public class Figure{
 			return Math.abs(surface)/2;
 		}
 	}
+	/**
+	 * Adds Point2D to a shape
+	 * @param point is the Point to add
+	 */
 	public void addPoint(Point2D point) {
 		this.addPointXY(point.getX(), point.getY());
 	}

@@ -1,7 +1,5 @@
 package com.geom.MVCControllers;
 
-
-
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 
@@ -9,7 +7,11 @@ import com.geom.MVCviews.Board;
 import com.geom.database.DAOFactory;
 import com.geom.database.FigureDAO;
 import com.geom.model.Figure;
-
+/**
+ * 
+ * @author Dasha
+ *
+ */
 public class SubController {
 	
 	public static void addCoord(String coord,Board board){

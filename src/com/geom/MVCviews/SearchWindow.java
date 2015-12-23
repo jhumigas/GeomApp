@@ -18,11 +18,13 @@ import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
 import java.awt.event.ActionEvent;
-
+/**
+ * Implements the form where user inputs ID to get a figure from database
+ * @author Dasha
+ *
+ */
 public class SearchWindow extends JInternalFrame implements Observer{
-	/**
-	 * 
-	 */
+
 	private static final long serialVersionUID = 1L;
 	
 	private JTextField textField;

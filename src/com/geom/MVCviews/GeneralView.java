@@ -25,7 +25,11 @@ import javax.swing.border.EtchedBorder;
 
 import com.geom.MVCModel.Model;
 import com.geom.model.Figure;
-
+/**
+ * Implements the Interface containing board, buttons and forms where the user can input his settings
+ * @author Dasha
+ *
+ */
 public class GeneralView extends JFrame implements Observer{
 
 

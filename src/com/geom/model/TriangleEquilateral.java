@@ -1,7 +1,11 @@
 package com.geom.model;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
-
+/**
+ * Implements equilateral triangles
+ * @author Dasha
+ *
+ */
 public class TriangleEquilateral extends Triangle{
 	public TriangleEquilateral(){
 		super();

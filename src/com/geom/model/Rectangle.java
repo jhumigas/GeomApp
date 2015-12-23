@@ -1,7 +1,12 @@
 package com.geom.model;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
-
+/**
+ * Implements rectangular shapes 
+ * A rectangle is any quadrilateral with four right angles.
+ * @author Dasha
+ *
+ */
 public class Rectangle extends Parallelogramme {
 	public Rectangle(){
 		super();

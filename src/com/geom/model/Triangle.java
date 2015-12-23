@@ -1,7 +1,11 @@
 package com.geom.model;
 import java.util.ArrayList;
 import java.awt.geom.*;
-
+/**
+ * Implements triangular shapes
+ * @author Dasha
+ *
+ */
 public class Triangle extends Polygone{
 	public Triangle(){
 		super();

@@ -10,13 +10,33 @@ import java.util.ArrayList;
 import com.geom.model.Factory;
 import com.geom.model.Figure;
 
+/**
+ * This class implements the specific layer to access to interact with 'Figure' table in the database
+ * A 'Figure' is here french for geometric shapes. It is formed by points, and lengths (or segments).
+ * To define a 'Figure' in the database you basically needs :
+ * <ul>
+ * <li> ID : The specific id of a figure</li>
+ * <li> Type : The type of a Figure e.g triangle, rectangular, square,...</li>
+ * <li> Perimetre : perimeter</li>
+ * <li> Surface : The surface area of the geometric figure</li>
+ * </ul>
+ * @author Dasha
+ *
+ */
 public class FigureDAO extends DAO<Figure> {
 
+	/**
+	 * Sets the connection used to access to the tables
+	 * @param conn
+	 */
 	public FigureDAO(Connection conn) {
 		super(conn);
 		// TODO Auto-generated constructor stub
 	}
 	@Override
+	/**
+	 * Creates a figure in the database
+	 */
 	public boolean create(Figure figure) {
 		String query = "INSERT INTO Figure(type,perimetre,surface) VALUES ('"+figure.perimetre()+"','"+figure.perimetre()+"', '"+figure.surface()+"');";
 		try{
@@ -26,6 +46,9 @@ public class FigureDAO extends DAO<Figure> {
 		}
 		return true;
 	}
+	/**
+	 * Saves a figure in the database and its components (lengths, points)
+	 */
 	public boolean save(Figure figure){
 		String query = "INSERT INTO Figure(type,perimetre,surface) VALUES ('"+figure.getType()+"','"+figure.perimetre()+"', '"+figure.surface()+"');";
 		int id_figure = 0;
@@ -42,6 +65,12 @@ public class FigureDAO extends DAO<Figure> {
 		new Point2DDAO(this.connect).save(figure.getPoints(), id_figure);
 		return true;
 	}
+	/**
+	 * Gets the key of the last figure saved in the database
+	 * Same method as save but returns the keys
+	 * @param figure
+	 * @return key if the saved figure
+	 */
 	public int returnLastKey(Figure figure){
 		String query = "INSERT INTO Figure(type,perimetre,surface) VALUES ('"+figure.getType()+"','"+figure.perimetre()+"', '"+figure.surface()+"');";
 		int id_figure = 0;
@@ -69,6 +98,9 @@ public class FigureDAO extends DAO<Figure> {
 		return false;
 	}
 	@Override
+	/**
+	 * Gets a figure if the id is provided
+	 */
 	public Figure find(int id) {
 		double x = 0;
 		double y = 0;
@@ -89,6 +121,9 @@ public class FigureDAO extends DAO<Figure> {
 		return Factory.gfigure(points);
 	}
 	@Override
+	/**
+	 * Print the 'Figure' table in the console
+	 */
 	public void afficher() {
 		try {
            ResultSet resultSet = this.connect.createStatement().executeQuery("SELECT * FROM Figure");

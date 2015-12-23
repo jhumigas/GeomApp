@@ -4,8 +4,26 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 
+/**
+ * This class implements the specific layer to access to the table 'Longueur'
+ * That specific table contains the lengths of the different segments of a geometric shape
+ * A 'Longueur' belongs to a Figure (geometric shapes). It is defined by :
+ * <ul>
+ * <li>id : the specific key of the length </li>
+ * <li>valeur: the value of a length in cm</li>
+ * <li> id_figure : the ID of the figure to which the Longueur belongs too</li>
+ * <li> num_longueur: a number to order the lengths (1st length, 2nd length,...) because a given figure respect a certain direction
+ * </ul> 
+ * @author Dasha
+ *
+ */
 public class LongueurDAO extends DAO<Double>{
 
+	/**
+	 * Sets the database connection
+	 * @param conn is the database connection
+	 * @see com.geom.database.GeomAppConnection
+	 */
 	public LongueurDAO(Connection conn) {
 		super(conn);
 		// TODO Auto-generated constructor stub
@@ -16,6 +34,13 @@ public class LongueurDAO extends DAO<Double>{
 		// TODO Auto-generated method stub
 		return false;
 	}
+	/**
+	 * 
+	 * @param l the value of a given length
+	 * @param id_figure the id of the 'Figure' to which the length belongs to
+	 * @param numero the number of the length
+	 * @return true
+	 */
 	public boolean save(double l,int id_figure,int numero){
 		String query = "INSERT INTO Longueur(valeur,id_figure,num_longueur) VALUES ('"+l+"','"+id_figure+"','"+numero+"')";
 		try{
@@ -29,6 +54,12 @@ public class LongueurDAO extends DAO<Double>{
 	public boolean save(Double obj) {
 		return true;
 	}
+	/**
+	 * Saves a list of length to the database
+	 * @param longueurs an array of lengths to be saved
+	 * @param id_figure the ID of the figure to which belongs the length
+	 * @return
+	 */
 	public boolean save(double [] longueurs,int id_figure){
 		for(int i =0; i<longueurs.length;i++)
 			save(longueurs[i],id_figure,i);
@@ -48,6 +79,9 @@ public class LongueurDAO extends DAO<Double>{
 	}
 
 	@Override
+	/**
+	 * retrieves a length provided its key
+	 */
 	public Double find(int id) {
 		// TODO Auto-generated method stub
 		Double longueur = (double) 0;
@@ -65,6 +99,9 @@ public class LongueurDAO extends DAO<Double>{
 		}
 		return longueur;
 	}
+	/**
+	 *  Prints the TABLE 'Longueur' in the console
+	 */
 	public void afficher() {
 		try {
            ResultSet resultSet = this.connect.createStatement().executeQuery("SELECT * FROM Longueur");

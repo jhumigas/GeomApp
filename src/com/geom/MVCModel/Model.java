@@ -8,7 +8,11 @@ import com.geom.MVCControllers.OutputUser;
 import com.geom.database.DAOFactory;
 import com.geom.model.Factory;
 import com.geom.model.Figure;
-
+/**
+ * 
+ * @author Dasha
+ *
+ */
 public class Model  extends Observable{
 	private Figure figure;
 	private String idFigure;

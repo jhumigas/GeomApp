@@ -1,7 +1,11 @@
 package com.geom.model;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
-
+/**
+ * Implements a 'Figure' forms by one point
+ * @author Dasha
+ *
+ */
 public class Punct extends Figure{
 	public Punct(){
 		super();
