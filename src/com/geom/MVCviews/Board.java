@@ -15,8 +15,9 @@ import java.awt.geom.Point2D;
 import java.util.ArrayList;
 /**
  * Implements the 'Board' where the geometric shapes is drawn 
- * The user can select a point a reset it
- * The Shape is updated everytime a point is added, reset or deleted
+ * The user can select, set or delete a point
+ * The Shape is updated every time a point is added, reset or deleted
+ * Built with WindowBuilder
  * @author Dasha
  *
  */
@@ -27,16 +28,20 @@ public class Board extends JPanel implements MouseListener{
 	private static final long serialVersionUID = 1L;
 	private Figure figure;
 	private double x,y;
-	private static final int size = 8; // taille des points representés
+	private static final int size = 8;
 	public Board(){
 		super();
 		addMouseListener(this);
 		this.figure=new Figure();
 	}
+	/**
+	 * Setting coordinates for the Board's repere
+	 * @param x
+	 * @param y
+	 */
 	public void centerFigure(double x, double y){
 		for(Point2D point: figure.getPoints()){
 			point.setLocation(point.getX()+x,-point.getY()+y);
-
 		}
 	}
 	public Board(Figure figure){
@@ -49,6 +54,9 @@ public class Board extends JPanel implements MouseListener{
 	public Figure getFigure(){
 		return this.figure;
 	}
+	/**
+	 * Draws the geometric shape in the board
+	 */
 	public void paintComponent(Graphics g){
 		//draw figure
 		
@@ -104,9 +112,7 @@ public class Board extends JPanel implements MouseListener{
 		
 	}
 	@Override
-	public void mouseEntered(MouseEvent e) {
-		
-		
+	public void mouseEntered(MouseEvent e) {	
 	}
 	@Override
 	public void mouseExited(MouseEvent e) {

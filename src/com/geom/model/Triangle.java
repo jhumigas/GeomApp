@@ -10,7 +10,10 @@ public class Triangle extends Polygone{
 	public Triangle(){
 		super();
 	}
-	
+	/**
+	 * Constructor of triangles
+	 * @param points
+	 */
 	public Triangle(ArrayList<Point2D> points){
 		super(points);	
 	}

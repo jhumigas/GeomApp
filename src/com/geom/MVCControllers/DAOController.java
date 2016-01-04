@@ -13,9 +13,20 @@ import com.geom.MVCviews.Board;
  *
  */
 public class DAOController {
+	/**
+	 * Finds a geometric shape in the database
+	 * Instantiates the connection to the database then gets a figure given its id
+	 * @param id is the primary key to find a 'Figure' in the database
+	 * @return a Figure i.e geometric shape given its id in the database
+	 */
 	public static Figure searchFigure(String id){
 		return DAOFactory.getFigureDAO().find(OutputUser.idSaisi(id));
 	}
+	/**
+	 * 
+	 * @param id
+	 * @return
+	 */
 	public static Figure searchFigure(int id){
 		String ide= Integer.toString(id);
 		return DAOFactory.getFigureDAO().find(OutputUser.idSaisi(ide));

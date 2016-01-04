@@ -3,7 +3,7 @@ import java.awt.geom.Point2D;
 import java.util.ArrayList;
 
 /**
- * This class implements the most basic shapes, without any constraints regarding number of points, lengths
+ * This class implements the most basic shapes, without any condition regarding number of points, lengths
  * @author Dasha
  *
  */
@@ -20,7 +20,7 @@ public class Figure{
 		this.points= point;
 	}
 	/**
-	 * Overloading, to accept the instantiation of a figure with a list of points
+	 * Overloading the first constructor, to accept the instantiation of a figure with a list of points
 	 * @param points
 	 */
 	public Figure(ArrayList<Point2D> points){

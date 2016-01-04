@@ -1,7 +1,11 @@
 package com.geom.model;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
-
+/**
+ * Handles the creation of quadrilateral shapes
+ * @author Dasha
+ *
+ */
 public class FactoryQuadrilateral {
 	
 	public static Figure gfigure(ArrayList<Point2D> parametres){
@@ -26,7 +30,12 @@ public class FactoryQuadrilateral {
 			return new Quadrilatere(parametres);
 		
 	}
-	
+	/**
+	 * Verifies if a quadrilateral shape is trapezois i.e there are two segment that are parallel 
+	 * Uses the fact that the sum of two consecutive angles is equal to 180 degrees hence their sin are equal
+	 * @param points is an ArrayList of points
+	 * @return true if the shape is trapezois
+	 */
 	public static boolean isTrapeze(ArrayList<Point2D> points){
 
 		double sin []=Factory.sins(points);
@@ -34,12 +43,22 @@ public class FactoryQuadrilateral {
 			return true;
 		return false;
 	}
+	/**
+	 * Verifies if a quadrilateral shape has two segments that have the same length
+	 * @param points is an ArrayList of points
+	 * @return
+	 */
 	public static boolean isParallelogramme(ArrayList<Point2D>points){
 		//verifier si les cotes deux à deux ont la meme longueur
 		if (points.get(0).distance(points.get(1)) == points.get(2).distance(points.get(3)))
 				return true;
 		return false;
 	}
+	/**
+	 * Verifies if the shape is convex i.e if two segments cross each other
+	 * @param points
+	 * @return
+	 */
 	public static boolean isConvexQuad(ArrayList<Point2D> points){
 		double sin[]=Factory.sins(points);
 		boolean convexity = true;

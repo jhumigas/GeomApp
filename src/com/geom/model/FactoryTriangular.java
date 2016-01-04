@@ -1,7 +1,11 @@
 package com.geom.model;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
-
+/**
+ * This class handles the creation of triangular shapes
+ * @author Dasha
+ *
+ */
 public class FactoryTriangular {
 	public static Figure gfigure(ArrayList<Point2D>parametres){
 		Factory.rejetpoint(parametres);
@@ -17,6 +21,11 @@ public class FactoryTriangular {
 			return new Triangle(parametres);
 		
 	}
+	/**
+	 * Verifies if 3 points form an Isosceles triangle
+	 * @param parametres is an ArrayList of points
+	 * @return true if the 3 points form an Isosceles triangle
+	 */
 	public static boolean isIsocele(ArrayList<Point2D>parametres){
 		Figure figure = new Figure(parametres);
 		double longueurs[]=figure.longueurs();

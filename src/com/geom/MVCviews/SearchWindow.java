@@ -20,6 +20,7 @@ import java.util.Observer;
 import java.awt.event.ActionEvent;
 /**
  * Implements the form where user inputs ID to get a figure from database
+ * Built with WindowBuilder
  * @author Dasha
  *
  */
@@ -34,7 +35,6 @@ public class SearchWindow extends JInternalFrame implements Observer{
 
 	public SearchWindow() {
 		initComponent();
-
 	}
 	public JSpinner getcomboBox(){
 		return this.comboBox;

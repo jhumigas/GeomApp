@@ -2,7 +2,18 @@ package com.geom.model;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 
+/**
+ * Class that implements the creation of a geometric shape
+ * Handles aligned points and points that have the same coordinates
+ * @author Dasha
+ *
+ */
 public class Factory{
+	/**
+	 * Generates the geometric shape given an ArrayList of points
+	 * @param parametres is an ArrayList of Points
+	 * @return a new specific shape(triangle, square, Rhombus, etc)
+	 */
 	public static Figure gfigure (ArrayList<Point2D> parametres){
 		Figure poly;
 		rejetpoint(parametres);
@@ -23,11 +34,16 @@ public class Factory{
 			poly = FactoryQuadrilateral.gfigure(parametres);
 			break;
 		default:
-			poly=FactoryPolygonal.gfigure(parametres);
+			poly= FactoryPolygonal.gfigure(parametres);
 		}
 		return poly;
 
 	}
+	/**
+	 * Verifies if there are right angles in the shape
+	 * @param parametres is an ArrayList of point
+	 * @return true if the shape contains right angles
+	 */
 	public static boolean aAngledroit(ArrayList<Point2D>parametres){
 		//verifier si au moins un des angles de la figure est droit
 		double valeurs[]=coss(parametres);
@@ -38,6 +54,11 @@ public class Factory{
 		return droit;
 		
 	}
+	/**
+	 * Verifies if the lengths of the lines forming the shape are all equal
+	 * @param parametres is an arrayList of Points
+	 * @return true if the shape is equilateral
+	 */
 	public static boolean longueursEgales(ArrayList<Point2D> parametres){
 		
 		boolean equi = true;
@@ -49,7 +70,13 @@ public class Factory{
 		}
 		return equi;		
 	}
-	
+	/**
+	 * Calculates the sinus of the angle between three points
+	 * @param pt1
+	 * @param pt2
+	 * @param pt3
+	 * @return the value of sin between the vector p3p2 and p1p2
+	 */
 	public static double sin(Point2D pt1, Point2D pt2, Point2D pt3){
 		// renvoie le sinus l'angle entre p3p2 et p1p2
 		double a [] = new double[2];
@@ -60,6 +87,13 @@ public class Factory{
 		b [1]= pt1.getY()- pt2.getY();
 		return (a[0]*b[1] -a[1]*b[0])/(pt3.distance(pt2) * pt1.distance(pt2));	
 	}
+	/**
+	 * Calculates the cosinus of the angle between three points
+	 * @param pt1
+	 * @param pt2
+	 * @param pt3
+	 * @return the value of sin between the vector p3p2 and p1p2
+	 */
 	public static double cos(Point2D pt1, Point2D pt2, Point2D pt3){
 		// renvoie le cosinus de l'angle entre p3p2 et p1p2
 		double a [] = new double[2];
@@ -92,6 +126,10 @@ public class Factory{
 		sin[sin.length -1]= sin(points.get(0), points.get(points.size()-1),points.get(points.size()-2));
 		return sin;
 	}
+	/**
+	 * Deletes a new point aligned to the previous ones
+	 * @param points
+	 */
 	public static void rejetpoint(ArrayList<Point2D>points){
 		//enlever le 3eme point aligner avec deux autres
 		//cas figures impossibles ?
@@ -108,6 +146,11 @@ public class Factory{
 			}
 		}
 	}
+	/**
+	 * Verifies if the picture is equilangular
+	 * @param points is an ArrayList of points
+	 * @return true if all the angles are equal
+	 */
 	public static boolean anglesEgaux(ArrayList<Point2D>points){
 		boolean equi = true;
 		double cos[]= coss(points);

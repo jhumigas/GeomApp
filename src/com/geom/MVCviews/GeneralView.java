@@ -27,6 +27,7 @@ import com.geom.MVCModel.Model;
 import com.geom.model.Figure;
 /**
  * Implements the Interface containing board, buttons and forms where the user can input his settings
+ * Built with WindowBuilder
  * @author Dasha
  *
  */

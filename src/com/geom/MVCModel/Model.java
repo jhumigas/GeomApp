@@ -9,11 +9,20 @@ import com.geom.database.DAOFactory;
 import com.geom.model.Factory;
 import com.geom.model.Figure;
 /**
- * 
+ * Implements the Model of the UI i.e
+ * <ul>
+ * <li> Model of the Board
+ * <li> Model of the Search Window
+ * </ul>
  * @author Dasha
  *
  */
 public class Model  extends Observable{
+	/**
+	 * figure is the geometric shape to be viewed in the board
+	 * idFigure is the key of of a given Figure in the database
+	 * keys is an ArrayList of keys of shapes stored in the database
+	 */
 	private Figure figure;
 	private String idFigure;
 	private ArrayList<Integer>keys;
@@ -23,11 +32,20 @@ public class Model  extends Observable{
 		this.idFigure="";
 		this.setListKeys();
 	}
+	/**
+	 * Sets the list of keys of existing shapes in the database
+	 * Change the hasChanged state to true
+	 * Notifies observers i.e the views
+	 */
 	public void setListKeys(){
 		this.keys=DAOFactory.getKeys("Figure");
 		setChanged();
 		notifyObservers();
 	}
+	/**
+	 * Getter of the attribute keys
+	 * @return
+	 */
 	public ArrayList<Integer> getListKeys(){
 		return this.keys;	
 	}
@@ -36,8 +54,11 @@ public class Model  extends Observable{
 		this.idFigure=id_figure;
 		this.setListKeys();
 	}
-	public void setFigure(Figure figure){
-		
+	/**
+	 * Sets the attribute figure, to be drew
+	 * @param figure
+	 */
+	public void setFigure(Figure figure){	
 		this.figure=figure;
 		setChanged();
 		notifyObservers();		
@@ -45,6 +66,12 @@ public class Model  extends Observable{
 	public Figure getFigure(){
 		return Factory.gfigure(this.figure.getPoints());
 	}
+	/**
+	 * Gets the figure drew and changes its coordinate so that the figure is in the absolute system of axis
+	 * @param x abscissa of the point 
+	 * @param y ordinate of the point
+	 * @return a new Figure in the absolute system of coordinates
+	 */
 	public Figure getFigureDrew(int x,int y){
 		return OutputUser.toRepereUser(this.figure, x, y);
 	}
@@ -57,6 +84,10 @@ public class Model  extends Observable{
 	public String getiDFigure(){
 		return this.idFigure;
 	}
+	/**
+	 * Add one point to the shape
+	 * @param point the new point to be added
+	 */
 	public void addPoint(Point2D point){
 		this.figure.addPoint(point);
 		setChanged();
@@ -82,6 +113,9 @@ public class Model  extends Observable{
 	public String giveTextP(){
 		return Double.toString(this.figure.perimetre());
 	}
+	/**
+	 * Removes last point
+	 */
 	public void removeLastPt(){
 		ArrayList<Point2D> points = this.figure.getPoints();
 		points.remove(points.size()-1);
@@ -90,6 +124,11 @@ public class Model  extends Observable{
 		notifyObservers();
 		
 	}
+	/**
+	 * Finds the position of a point in the ArrayList of point of a given 'Figure'
+	 * @param coord is the pair of coordinates of the searched point
+	 * @return the position of the point in the ArrayList
+	 */
 	public int findInt(double[] coord){
 		int j= 0;
 		for(int i =0; i<figure.numpoints();i++)
@@ -97,17 +136,25 @@ public class Model  extends Observable{
 				j=i;
 		return j;
 	}
+	/**
+	 * Removes one point
+	 * @param t is the position of the point in the ArrayList of points
+	 */
 	public void removeOne(int t){
 		ArrayList<Point2D> pts = this.figure.getPoints();
 		pts.remove(t);
 		this.setFigure(Factory.gfigure(pts));
 	}
+	/**
+	 * Changes the coordinates of one point
+	 * @param i the position of the point in the ArrayList
+	 * @param pt the point to substitute to the old point
+	 */
 	public void setOnePoint(int i, Point2D pt){
 		ArrayList<Point2D> pts = this.figure.getPoints();
 		pts.remove(i);
 		pts.add(i, pt);
-		this.setFigure(Factory.gfigure(pts));
-		
+		this.setFigure(Factory.gfigure(pts));	
 	}
 	
 }

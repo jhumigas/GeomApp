@@ -10,8 +10,10 @@ import java.sql.SQLException;
  */
 public class GeomAppConnection {
 	/**
-	 * url to the database
-	 * user and password should be setted according to provided informations
+	 * <ul>
+	 * <li>url to the database</li>
+	 * <li>user and password should be setted according to provided informations</li>
+	 * </ul>
 	 */
 	private String url ="jdbc:mysql://localhost:3306/FiguresGeometriques";
     private String user="root";
