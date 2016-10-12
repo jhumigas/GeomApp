@@ -49,8 +49,8 @@ public class DAOController {
 	}
 	public static String[] getLengths(String id){
 		Figure figure = searchFigure(id);
-		double[]l=figure.longueurs();
-		String[]ls=new String[figure.numpoints()];
+		double[]l=figure.lengths();
+		String[]ls=new String[figure.numPoints()];
 		try{
 		for(int i=0;i<l.length;i++){
 				ls[i]= Double.toString(l[i]);
@@ -87,18 +87,18 @@ public class DAOController {
 	}
 	public static String getPerimeter(String id){
 		Figure figure = searchFigure(id);
-		String p =Double.toString(figure.perimetre());
+		String p =Double.toString(figure.perimeter());
 		if(p.length()>5)
 			p=p.substring(0,4);
 		return p;
 	}
-	public static String getSurface(String id){
+	public static String getarea(String id){
 		Figure figure = searchFigure(id);
-		return Double.toString(figure.surface());
+		return Double.toString(figure.area());
 	}
-	public static String getNumPoints(String id){
+	public static String getnumPoints(String id){
 		Figure figure = searchFigure(id);
-		return Integer.toString(figure.numpoints());
+		return Integer.toString(figure.numPoints());
 	}
 
 }

@@ -17,8 +17,8 @@ import com.geom.model.Figure;
  * <ul>
  * <li> ID : The specific id of a figure</li>
  * <li> Type : The type of a Figure e.g triangle, rectangular, square,...</li>
- * <li> Perimetre : perimeter</li>
- * <li> Surface : The surface area of the geometric figure</li>
+ * <li> perimeter : perimeter</li>
+ * <li> area : The area area of the geometric figure</li>
  * </ul>
  * @author Dasha
  *
@@ -38,7 +38,7 @@ public class FigureDAO extends DAO<Figure> {
 	 * Creates a figure in the database
 	 */
 	public boolean create(Figure figure) {
-		String query = "INSERT INTO Figure(type,perimetre,surface) VALUES ('"+figure.perimetre()+"','"+figure.perimetre()+"', '"+figure.surface()+"');";
+		String query = "INSERT INTO Figure(type,perimeter,area) VALUES ('"+figure.perimeter()+"','"+figure.perimeter()+"', '"+figure.area()+"');";
 		try{
 			this.connect.createStatement().executeUpdate(query);
 		}catch(SQLException e){
@@ -50,7 +50,7 @@ public class FigureDAO extends DAO<Figure> {
 	 * Saves a figure in the database and its components (lengths, points)
 	 */
 	public boolean save(Figure figure){
-		String query = "INSERT INTO Figure(type,perimetre,surface) VALUES ('"+figure.getType()+"','"+figure.perimetre()+"', '"+figure.surface()+"');";
+		String query = "INSERT INTO Figure(type,perimeter,area) VALUES ('"+figure.getType()+"','"+figure.perimeter()+"', '"+figure.area()+"');";
 		int id_figure = 0;
 		try{
 			Statement state = this.connect.createStatement();
@@ -61,7 +61,7 @@ public class FigureDAO extends DAO<Figure> {
 		}catch(SQLException e){
 			e.printStackTrace();
 		}
-		new LongueurDAO(this.connect).save(figure.longueurs(), id_figure);
+		new LengthDAO(this.connect).save(figure.lengths(), id_figure);
 		new Point2DDAO(this.connect).save(figure.getPoints(), id_figure);
 		return true;
 	}
@@ -72,18 +72,19 @@ public class FigureDAO extends DAO<Figure> {
 	 * @return key if the saved figure
 	 */
 	public int returnLastKey(Figure figure){
-		String query = "INSERT INTO Figure(type,perimetre,surface) VALUES ('"+figure.getType()+"','"+figure.perimetre()+"', '"+figure.surface()+"');";
+		String query = "INSERT INTO Figure(type,perimeter,area) VALUES ('"+figure.getType()+"','"+figure.perimeter()+"', '"+figure.area()+"');";
 		int id_figure = 0;
 		try{
 			Statement state = this.connect.createStatement();
-			state.executeUpdate(query,Statement.RETURN_GENERATED_KEYS);
+			state.executeUpdate(query);
+			//state.executeUpdate(query,Statement.RETURN_GENERATED_KEYS);
 			ResultSet res = state.getGeneratedKeys();
 			res.next();
 			id_figure = res.getInt(1);
 		}catch(SQLException e){
 			e.printStackTrace();
 		}
-		new LongueurDAO(this.connect).save(figure.longueurs(), id_figure);
+		new LengthDAO(this.connect).save(figure.lengths(), id_figure);
 		new Point2DDAO(this.connect).save(figure.getPoints(), id_figure);
 		return id_figure;	
 	}
@@ -107,8 +108,9 @@ public class FigureDAO extends DAO<Figure> {
 		ArrayList<Point2D>points = new ArrayList<Point2D>();
 		try{
 			ResultSet result = this.connect.createStatement(
-					ResultSet.TYPE_SCROLL_INSENSITIVE,
-					ResultSet.CONCUR_READ_ONLY).executeQuery("SELECT * FROM Point WHERE id_figure="+id);
+					//ResultSet.TYPE_SCROLL_INSENSITIVE,
+					//ResultSet.CONCUR_READ_ONLY
+			).executeQuery("SELECT * FROM Point WHERE id_figure="+id);
 			while(result.next()){
 				x = (double) result.getObject("x");
 				y = (double) result.getObject("y");

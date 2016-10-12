@@ -7,11 +7,11 @@ import java.util.ArrayList;
  *
  */
 public class FactoryPolygonal {
-	public static Figure gfigure(ArrayList<Point2D>parametres){
-		if(Factory.longueursEgales(parametres))
-			return new PolygoneRegulier(parametres);
+	public static Figure gfigure(ArrayList<Point2D>parameters){
+		if(Factory.hasEqualSides(parameters))
+			return new RegularPolygon(parameters);
 		else
-			return new Polygone(parametres);	
+			return new Polygon(parameters);	
 	}
 
 }

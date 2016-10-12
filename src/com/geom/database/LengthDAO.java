@@ -10,7 +10,7 @@ import java.sql.SQLException;
  * A 'Length' belongs to a Figure (geometric shapes). It is defined by :
  * <ul>
  * <li> id : the specific key of the length </li>
- * <li> valeur: the value of a length in cm</li>
+ * <li> value: the value of a length in cm</li>
  * <li> id_figure : the ID of the figure to which the Length belongs too</li>
  * <li> num_length: a number to order the lengths (1st length, 2nd length,...) because a given figure respect a certain direction
  * </ul> 
@@ -42,7 +42,7 @@ public class LengthDAO extends DAO<Double>{
 	 * @return true
 	 */
 	public boolean save(double l,int id_figure,int numero){
-		String query = "INSERT INTO Length(valeur,id_figure,num_length) VALUES ('"+l+"','"+id_figure+"','"+numero+"')";
+		String query = "INSERT INTO Length(value,id_figure,num_length) VALUES ('"+l+"','"+id_figure+"','"+numero+"')";
 		try{
 			this.connect.createStatement().executeUpdate(query);
 			//ResultSetMetaData resultMeta = result.getMetaData();

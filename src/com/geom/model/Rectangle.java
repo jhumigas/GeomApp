@@ -7,7 +7,7 @@ import java.util.ArrayList;
  * @author Dasha
  *
  */
-public class Rectangle extends Parallelogramme {
+public class Rectangle extends Parallelogram {
 	public Rectangle(){
 		super();
 	}

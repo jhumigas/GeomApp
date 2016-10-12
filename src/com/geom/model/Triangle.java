@@ -6,7 +6,7 @@ import java.awt.geom.*;
  * @author Dasha
  *
  */
-public class Triangle extends Polygone{
+public class Triangle extends Polygon{
 	public Triangle(){
 		super();
 	}

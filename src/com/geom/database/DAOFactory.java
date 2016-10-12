@@ -24,11 +24,11 @@ public class DAOFactory {
 		return new FigureDAO(conn);
 	}
 	/**
-	 * Instantiate LongueurDAO
+	 * Instantiate LengthDAO
 	 * @return
 	 */
-	public static DAO<Double> getLongueurDAO(){
-		return new LongueurDAO(conn);
+	public static DAO<Double> getLengthDAO(){
+		return new LengthDAO(conn);
 	}
 	/**
 	 * Instantiate Point2DDAO

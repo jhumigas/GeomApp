@@ -43,7 +43,7 @@ public class GeneralController {
 		
 		view.getmntmSave().addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if(view.getBoard().getFigure() !=null && view.getBoard().getFigure().numpoints()>0){
+				if(view.getBoard().getFigure() !=null && view.getBoard().getFigure().numPoints()>0){
 					if(model !=null){
 					model.setidFigure(DAOController.returnLastKey(model.getFigure()));
 					model.setListKeys();
@@ -64,7 +64,7 @@ public class GeneralController {
 		});
 		view.getbuttonPrev().addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					if(model.getFigure().numpoints()!=0)
+					if(model.getFigure().numPoints()!=0)
 						model.removeLastPt();
 					}
 		});

@@ -1,6 +1,6 @@
 # GeomApp
 
-A Java application to draw basic geometric shapes. Using the interface, the user is able to precise points coordinates and the app will get the distance, surface and type of figure.
+A Java application to draw basic geometric shapes. Using the interface, the user is able to precise points coordinates and the app will get the distance, area and type of figure.
 
 This project was coded using Eclispe IDE. In order to run the source code, open with eclipse and run src/Main.java. 
 
@@ -44,12 +44,12 @@ The Relational model is described here :
   * id : Primary key
   * type : Type of the figure (e.g Trapezoid)
   * perimeter  : value of the perimeter
-  * surface : value of the Surface area
-* **Longueur** : A length or a distance between two points
+  * area : value of the area area
+* **Length** : A length or a distance between two points
   * id : Primary key
-  * valeur : Value of the length
+  * value : Value of the length
   * id_figure : id of the figure to with the corresponding segment belongs to
-  * num_longueur : Number of the segment
+  * num_Length : Number of the segment
 * **Point**
   * id : Primary key 
   * x : absissa of the point (int)

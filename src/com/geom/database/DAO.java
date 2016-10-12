@@ -3,7 +3,7 @@ import java.sql.Connection;
 
 /**
  * This class implements the CRUD operations.
- * It is an abstract generic class inherited by FigureDAO, LongueurDAO and Point2DDAO
+ * It is an abstract generic class inherited by FigureDAO, LengthDAO and Point2DDAO
  * @author Dasha
  * @param <T>
  */

@@ -29,31 +29,31 @@ SET time_zone = "+00:00";
 CREATE TABLE `Figure` (
   `id` int(11) unsigned NOT NULL,
   `type` varchar(30) NOT NULL,
-  `perimetre` double DEFAULT NULL,
-  `surface` double DEFAULT NULL
+  `perimeter` double DEFAULT NULL,
+  `area` double DEFAULT NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=76 DEFAULT CHARSET=utf8;
 
 --
 -- Contenu de la table `Figure`
 --
 
-INSERT INTO `Figure` (`id`, `type`, `perimetre`, `surface`) VALUES
-(5, 'Quadrilatere', 210.71067811865476, 650),
-(6, 'Trapeze', 210.71067811865476, 650),
-(7, 'Trapeze', 210.71067811865476, 650),
-(8, 'Trapeze', 210.71067811865476, 650),
-(9, 'Polygone', 617.1601883432527, 9350),
-(10, 'Polygone', 282.842712474619, 0),
+INSERT INTO `Figure` (`id`, `type`, `perimeter`, `area`) VALUES
+(5, 'Quadrilateral', 210.71067811865476, 650),
+(6, 'Trapezoid', 210.71067811865476, 650),
+(7, 'Trapezoid', 210.71067811865476, 650),
+(8, 'Trapezoid', 210.71067811865476, 650),
+(9, 'Polygon', 617.1601883432527, 9350),
+(10, 'Polygon', 282.842712474619, 0),
 (11, 'Triangle isocele rectangle', 170.71067811865476, 1250),
-(12, 'Quadrilatere', 200, 2500),
-(13, 'Carre', 200, 2500),
-(14, 'Carre', 200, 2500),
-(15, 'Quadrilatere', 200, 2500),
-(16, 'Carre', 200, 2500),
-(17, 'Polygone', 617.1601883432527, 9350),
+(12, 'Quadrilateral', 200, 2500),
+(13, 'Square', 200, 2500),
+(14, 'Square', 200, 2500),
+(15, 'Quadrilateral', 200, 2500),
+(16, 'Square', 200, 2500),
+(17, 'Polygon', 617.1601883432527, 9350),
 (18, 'Triangle isocele rectangle', 170.71067811865476, 1250),
-(19, 'Quadrilatere convexe', 21.099019513592786, 2.5),
-(20, 'Carre', 20, 25),
+(19, 'Quadrilateral convexe', 21.099019513592786, 2.5),
+(20, 'Square', 20, 25),
 (21, 'Triangle isocele rectangle', 17.071067811865476, 12.5),
 (22, 'Triangle isocele rectangle', 17.071067811865476, 12.5),
 (23, 'Triangle isocele rectangle', 17.071067811865476, 12.5),
@@ -71,8 +71,8 @@ INSERT INTO `Figure` (`id`, `type`, `perimetre`, `surface`) VALUES
 (35, 'Figure', 0, 0),
 (36, 'Figure', 341.4213562373095, 5000),
 (37, 'Triangle isocele rectangle', 341.4213562373095, 5000),
-(38, 'Carre', 20, 25),
-(39, 'Carre', 20, 25),
+(38, 'Square', 20, 25),
+(39, 'Square', 20, 25),
 (40, 'Figure', 341.4213562373095, 5000),
 (41, 'Figure', 341.4213562373095, 5000),
 (42, 'Triangle isocele rectangle', 341.4213562373095, 5000),
@@ -87,7 +87,7 @@ INSERT INTO `Figure` (`id`, `type`, `perimetre`, `surface`) VALUES
 (51, 'Figure', 0, 0),
 (52, 'Figure', 500, 0),
 (53, 'Figure', 34.14213562373095, 50),
-(54, 'Quadrilatere', 54.14213562373095, 150),
+(54, 'Quadrilateral', 54.14213562373095, 150),
 (55, 'Point', 0, 0),
 (56, 'Point', 0, 0),
 (57, 'Point', 0, 0),
@@ -106,28 +106,28 @@ INSERT INTO `Figure` (`id`, `type`, `perimetre`, `surface`) VALUES
 (70, 'Point', 0, 0),
 (71, 'Point', 0, 0),
 (72, 'Point', 0, 0),
-(73, 'Carre', 200, 2500),
-(74, 'Polygone', 40.19803902718557, 105),
+(73, 'Square', 200, 2500),
+(74, 'Polygon', 40.19803902718557, 105),
 (75, 'Triangle isocele rectangle', 34.14213562373095, 50);
 
 -- --------------------------------------------------------
 
 --
--- Structure de la table `Longueur`
+-- Structure de la table `Length`
 --
 
-CREATE TABLE `Longueur` (
+CREATE TABLE `Length` (
   `id` int(11) unsigned NOT NULL,
-  `valeur` double DEFAULT NULL,
+  `value` double DEFAULT NULL,
   `id_figure` int(11) DEFAULT NULL,
-  `num_longueur` int(11) DEFAULT NULL
+  `num_length` int(11) DEFAULT NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=205 DEFAULT CHARSET=utf8;
 
 --
--- Contenu de la table `Longueur`
+-- Contenu de la table `Length`
 --
 
-INSERT INTO `Longueur` (`id`, `valeur`, `id_figure`, `num_longueur`) VALUES
+INSERT INTO `Length` (`id`, `value`, `id_figure`, `num_length`) VALUES
 (31, 10, 5, 0),
 (32, 30, 5, 1),
 (33, 70.71067811865476, 5, 2),
@@ -506,9 +506,9 @@ ALTER TABLE `Figure`
   ADD PRIMARY KEY (`id`);
 
 --
--- Index pour la table `Longueur`
+-- Index pour la table `Length`
 --
-ALTER TABLE `Longueur`
+ALTER TABLE `Length`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -527,9 +527,9 @@ ALTER TABLE `Point`
 ALTER TABLE `Figure`
   MODIFY `id` int(11) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=76;
 --
--- AUTO_INCREMENT pour la table `Longueur`
+-- AUTO_INCREMENT pour la table `Length`
 --
-ALTER TABLE `Longueur`
+ALTER TABLE `Length`
   MODIFY `id` int(11) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=205;
 --
 -- AUTO_INCREMENT pour la table `Point`

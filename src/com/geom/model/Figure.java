@@ -46,7 +46,7 @@ public class Figure{
 	 * @param y ordinate of the new point to be added
 	 */
 	public void addPointXY(double x,double y){
-		for(int i=0;i< this.numpoints(); i++){
+		for(int i=0;i< this.numPoints(); i++){
 			if(this.points.get(i).getX()==x && this.points.get(i).getY()==y)
 				return;
 		}
@@ -56,7 +56,7 @@ public class Figure{
 	 * 
 	 * @return the number of points forming a shape
 	 */
-	public int numpoints(){
+	public int numPoints(){
 		//renvoie le nombre de points de la figure
 		return this.points.size();
 	}
@@ -72,23 +72,23 @@ public class Figure{
 	 * 
 	 * @return an array of lengths(distance) of the shape
 	 */
-	public double[] longueurs(){
-		//renvoie un tableau contenant les longueurs des cotes
+	public double[] lengths(){
+		//renvoie un tableau contenant les lengths des cotes
 		//renvoie 0 par defaut pour le point
 
-		switch(this.numpoints()){
+		switch(this.numPoints()){
 		case 0 & 1:
-			double longueurs1[]={0};
-			return longueurs1;
+			double lengths1[]={0};
+			return lengths1;
 		case 2:
-			double longueurs2[]={this.points.get(0).distance(this.points.get(1))};
-			return longueurs2;
+			double lengths2[]={this.points.get(0).distance(this.points.get(1))};
+			return lengths2;
 		default:
-			double longueurs[]=new double[this.points.size()];
+			double lengths[]=new double[this.points.size()];
 			for (int i=0;i<this.points.size()-1;i++)
-				longueurs[i]=this.points.get(i).distance(this.points.get(i+1));
-			longueurs[this.points.size()-1]=this.points.get(this.points.size()-1).distance(this.points.get(0));
-			return longueurs;
+				lengths[i]=this.points.get(i).distance(this.points.get(i+1));
+			lengths[this.points.size()-1]=this.points.get(this.points.size()-1).distance(this.points.get(0));
+			return lengths;
 			
 		}
 	}
@@ -97,27 +97,27 @@ public class Figure{
 	 * A perimeter is a path that surrounds a two-dimensional shape.
 	 * @return the value of perimeter
 	 */
-	public double perimetre(){
-		double perimetre = 0;
-		for(double longueur:this.longueurs())
-			perimetre+=longueur;
-		return perimetre;
+	public double perimeter(){
+		double perimeter = 0;
+		for(double Length:this.lengths())
+			perimeter+=Length;
+		return perimeter;
 	}
 	/**
-	 * Calculates the surface area of a geometric shape
-	 * @return the surface area of a geometric shape
+	 * Calculates the area area of a geometric shape
+	 * @return the area area of a geometric shape
 	 */
-	public double surface(){
-		//renvoie la surface de la figure
+	public double area(){
+		//renvoie la area de la figure
 		// renvoie 0 si la figure a moins de 3 points
-		if(this.numpoints()<=2){
+		if(this.numPoints()<=2){
 			return 0;
 		}
 		else{
-			double surface = this.points.get(this.points.size()-1).getX()*this.points.get(0).getY()-this.points.get(0).getX()*this.points.get(this.points.size()-1).getY();
+			double area = this.points.get(this.points.size()-1).getX()*this.points.get(0).getY()-this.points.get(0).getX()*this.points.get(this.points.size()-1).getY();
 			for(int i = 0; i<this.points.size()-1;i++)
-				surface += this.points.get(i).getX()*this.points.get(i+1).getY()-this.points.get(i+1).getX()*this.points.get(i).getY();
-			return Math.abs(surface)/2;
+				area += this.points.get(i).getX()*this.points.get(i+1).getY()-this.points.get(i+1).getX()*this.points.get(i).getY();
+			return Math.abs(area)/2;
 		}
 	}
 	/**

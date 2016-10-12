@@ -35,7 +35,7 @@ public class OutputUser {
 	}
 	public static Figure toRepereUser(Figure figure, double x, double y){
 		ArrayList<Point2D>points = new ArrayList<Point2D>();
-		if(figure.numpoints()!=0){
+		if(figure.numPoints()!=0){
 			for(Point2D pt: figure.getPoints())
 				points.add(repereUser(pt,x,y));	
 		}
@@ -43,7 +43,7 @@ public class OutputUser {
 	}
 	public static Figure toRepereScreen(Figure figure, double x, double y){
 		ArrayList<Point2D>points = new ArrayList<Point2D>();
-		if(figure.numpoints()!=0){
+		if(figure.numPoints()!=0){
 			for(Point2D pt: figure.getPoints())
 				points.add(repereScreen(pt,x,y));	
 		}

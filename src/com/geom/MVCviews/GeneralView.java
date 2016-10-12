@@ -146,8 +146,6 @@ public class GeneralView extends JFrame implements Observer{
 	public GeneralView() {
 		setResizable(false);
 		initComponent();
-		
-		
 	}
 	
 	public void initComponent(){

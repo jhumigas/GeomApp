@@ -11,61 +11,61 @@ import java.util.ArrayList;
 public class Factory{
 	/**
 	 * Generates the geometric shape given an ArrayList of points
-	 * @param parametres is an ArrayList of Points
+	 * @param parameters is an ArrayList of Points
 	 * @return a new specific shape(triangle, square, Rhombus, etc)
 	 */
-	public static Figure gfigure (ArrayList<Point2D> parametres){
+	public static Figure gfigure (ArrayList<Point2D> parameters){
 		Figure poly;
-		rejetpoint(parametres);
-		switch(parametres.size()){
+		rejectALinedPoint(parameters);
+		switch(parameters.size()){
 		case 0:
-			poly = new FigureVide();
+			poly = new EmptyFigure();
 			break;
 		case 1:
-			poly = new Punct(parametres);
+			poly = new Punct(parameters);
 			break;
 		case 2:
-			poly = new Ligne(parametres);
+			poly = new Line(parameters);
 			break;
 		case 3:
-			poly = FactoryTriangular.gfigure(parametres);
+			poly = FactoryTriangular.gfigure(parameters);
 			break;
 		case 4:
-			poly = FactoryQuadrilateral.gfigure(parametres);
+			poly = FactoryQuadrilateral.gfigure(parameters);
 			break;
 		default:
-			poly= FactoryPolygonal.gfigure(parametres);
+			poly= FactoryPolygonal.gfigure(parameters);
 		}
 		return poly;
 
 	}
 	/**
 	 * Verifies if there are right angles in the shape
-	 * @param parametres is an ArrayList of point
+	 * @param parameters is an ArrayList of point
 	 * @return true if the shape contains right angles
 	 */
-	public static boolean aAngledroit(ArrayList<Point2D>parametres){
+	public static boolean hasRightAngle(ArrayList<Point2D>parameters){
 		//verifier si au moins un des angles de la figure est droit
-		double valeurs[]=coss(parametres);
+		double values[]=coss(parameters);
 		boolean droit = false;
-		for(int i=0;i<valeurs.length;i++)
-			if(valeurs[i]==0)
+		for(int i=0;i<values.length;i++)
+			if(values[i]==0)
 				droit =true;
 		return droit;
 		
 	}
 	/**
 	 * Verifies if the lengths of the lines forming the shape are all equal
-	 * @param parametres is an arrayList of Points
+	 * @param parameters is an arrayList of Points
 	 * @return true if the shape is equilateral
 	 */
-	public static boolean longueursEgales(ArrayList<Point2D> parametres){
+	public static boolean hasEqualSides(ArrayList<Point2D> parameters){
 		
 		boolean equi = true;
-		double distance = parametres.get(0).distance(parametres.get(parametres.size()-1));
+		double distance = parameters.get(0).distance(parameters.get(parameters.size()-1));
 		int i = 0;
-		while(i<parametres.size()-1){
-			equi = equi && distance == parametres.get(i).distance(parametres.get(i+1)) ;
+		while(i<parameters.size()-1){
+			equi = equi && distance == parameters.get(i).distance(parameters.get(i+1)) ;
 			i++;
 		}
 		return equi;		
@@ -130,8 +130,8 @@ public class Factory{
 	 * Deletes a new point aligned to the previous ones
 	 * @param points
 	 */
-	public static void rejetpoint(ArrayList<Point2D>points){
-		//enlever le 3eme point aligner avec deux autres
+	public static void rejectALinedPoint(ArrayList<Point2D>points){
+		//enlever le 3eme point aLiner avec deux autres
 		//cas figures impossibles ?
 		if(points.size()>2){
 			double []sins= sins(points);
@@ -147,11 +147,11 @@ public class Factory{
 		}
 	}
 	/**
-	 * Verifies if the picture is equilangular
+	 * Verifies if the picture is equiangular
 	 * @param points is an ArrayList of points
 	 * @return true if all the angles are equal
 	 */
-	public static boolean anglesEgaux(ArrayList<Point2D>points){
+	public static boolean isEquiangular(ArrayList<Point2D>points){
 		boolean equi = true;
 		double cos[]= coss(points);
 		double sin[]=sins(points);

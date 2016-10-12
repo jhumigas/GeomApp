@@ -97,9 +97,9 @@ public class Model  extends Observable{
 	public Double[] getLengths(){
 		Double[] ds=null;
 		try{
-			ds = new Double [this.figure.numpoints()];
-			for (int i = 0; i<this.figure.numpoints();i++)
-				ds[i]= new Double ( this.figure.longueurs()[i]);
+			ds = new Double [this.figure.numPoints()];
+			for (int i = 0; i<this.figure.numPoints();i++)
+				ds[i]= new Double ( this.figure.lengths()[i]);
 			return ds;
 		}catch(Exception e){
 			//System.out.println("C'est vide");
@@ -107,11 +107,11 @@ public class Model  extends Observable{
 		return ds;
 	}
 	public String giveTextArea(){
-		return Double.toString(this.figure.surface());
+		return Double.toString(this.figure.area());
 		
 	}
 	public String giveTextP(){
-		return Double.toString(this.figure.perimetre());
+		return Double.toString(this.figure.perimeter());
 	}
 	/**
 	 * Removes last point
@@ -131,7 +131,7 @@ public class Model  extends Observable{
 	 */
 	public int findInt(double[] coord){
 		int j= 0;
-		for(int i =0; i<figure.numpoints();i++)
+		for(int i =0; i<figure.numPoints();i++)
 			if(figure.getPoints().get(i).getX()==coord[0] && figure.getPoints().get(i).getY()==coord[1])
 				j=i;
 		return j;

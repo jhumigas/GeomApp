@@ -60,7 +60,7 @@ public class Board extends JPanel implements MouseListener{
 	public void paintComponent(Graphics g){
 		//draw figure
 		
-		if(figure.numpoints()!=0 && figure!=null){
+		if(figure.numPoints()!=0 && figure!=null){
 			Graphics2D g2 = (Graphics2D)g;
 			GeneralPath poly = new GeneralPath(GeneralPath.WIND_EVEN_ODD,this.figure.getPoints().size());
 			poly.moveTo(this.figure.getPoints().get(0).getX(), this.figure.getPoints().get(0).getY());
@@ -86,8 +86,8 @@ public class Board extends JPanel implements MouseListener{
 	}
 	public void removeLastPoint(){
 		ArrayList<Point2D>pts = this.getFigure().getPoints();
-		if(figure.numpoints()>0){
-			pts.remove(this.figure.numpoints()-1);
+		if(figure.numPoints()>0){
+			pts.remove(this.figure.numPoints()-1);
 			this.figure= new Figure(pts);
 		}
 	}

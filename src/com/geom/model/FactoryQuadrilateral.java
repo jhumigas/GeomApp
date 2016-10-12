@@ -8,26 +8,26 @@ import java.util.ArrayList;
  */
 public class FactoryQuadrilateral {
 	
-	public static Figure gfigure(ArrayList<Point2D> parametres){
-		Factory.rejetpoint(parametres);
-		if(isConvexQuad(parametres)){
-			if (Factory.longueursEgales(parametres) && Factory.aAngledroit(parametres)){
-				return new Carre(parametres);
+	public static Figure gfigure(ArrayList<Point2D> parameters){
+		Factory.rejectALinedPoint(parameters);
+		if(isConvexQuad(parameters)){
+			if (Factory.hasEqualSides(parameters) && Factory.hasRightAngle(parameters)){
+				return new Square(parameters);
 			}
-			else if(Factory.longueursEgales(parametres)){
-				return new Losange(parametres);
+			else if(Factory.hasEqualSides(parameters)){
+				return new Rhombus(parameters);
 			}
-			else if(Factory.aAngledroit(parametres) && isParallelogramme(parametres))
-				return new Rectangle(parametres);
-			else if(isParallelogramme(parametres))
-				return new Parallelogramme(parametres);
-			else if(isTrapeze(parametres))
-				return new Trapeze(parametres);
+			else if(Factory.hasRightAngle(parameters) && isParallelogram(parameters))
+				return new Rectangle(parameters);
+			else if(isParallelogram(parameters))
+				return new Parallelogram(parameters);
+			else if(isTrapezoid(parameters))
+				return new Trapezoid(parameters);
 			else 
-				return new QuadrilatereConvexe(parametres);
+				return new ConvexQuadrilateral(parameters);
 			}
 		else
-			return new Quadrilatere(parametres);
+			return new Quadrilateral(parameters);
 		
 	}
 	/**
@@ -36,7 +36,7 @@ public class FactoryQuadrilateral {
 	 * @param points is an ArrayList of points
 	 * @return true if the shape is trapezois
 	 */
-	public static boolean isTrapeze(ArrayList<Point2D> points){
+	public static boolean isTrapezoid(ArrayList<Point2D> points){
 
 		double sin []=Factory.sins(points);
 		if ((sin[0]==sin[1])||sin[1]==sin[2]) //si deux angles sont supplémentaires
@@ -48,8 +48,8 @@ public class FactoryQuadrilateral {
 	 * @param points is an ArrayList of points
 	 * @return
 	 */
-	public static boolean isParallelogramme(ArrayList<Point2D>points){
-		//verifier si les cotes deux à deux ont la meme longueur
+	public static boolean isParallelogram(ArrayList<Point2D>points){
+		//verifier si les cotes deux à deux ont la meme Length
 		if (points.get(0).distance(points.get(1)) == points.get(2).distance(points.get(3)))
 				return true;
 		return false;
