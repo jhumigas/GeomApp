@@ -8,7 +8,7 @@ import com.geom.database.DAOFactory;
 import com.geom.model.Figure;
 import com.geom.MVCviews.Board;
 /**
- * Implements the interactions between the views and the DAO classes.
+ * Implements the interactions between the views and the DAO layer.
  * @author Dasha
  *
  */
@@ -22,30 +22,29 @@ public class DAOController {
 	public static Figure searchFigure(String id){
 		return DAOFactory.getFigureDAO().find(OutputUser.idSaisi(id));
 	}
+
 	/**
-	 * 
-	 * @param id
-	 * @return
+	 * Perform a query to the database and returns the correspond database id
+	 * @param figure to query in the database
+	 * @return id of the figure matching the one provided in argument
 	 */
-	public static Figure searchFigure(int id){
-		String ide= Integer.toString(id);
-		return DAOFactory.getFigureDAO().find(OutputUser.idSaisi(ide));
+	public static int returnLastKey(Figure figure){
+		return ((FigureDAO)DAOFactory.getFigureDAO()).returnLastKey(figure);
 	}
+
+	// Used to test the display of figure from a terminal
+	/*
 	public static Board drawSearchedFigure(String id){
 		Figure figure =searchFigure(id);
-		return new Board(figure);	
+		return new Board(figure);
 	}
 	public static void saveFigureDrawed(Figure figure){
 		DAOFactory.getFigureDAO().save(figure);
 	}
-	public static int returnLastKey(Figure figure){
-		return ((FigureDAO)DAOFactory.getFigureDAO()).returnLastKey(figure);
-	}
-	
 	public static String getTypeFigure(String id){
 		Figure figure = searchFigure(id);
 		return figure.getType();
-		
+
 	}
 	public static String[] getLengths(String id){
 		Figure figure = searchFigure(id);
@@ -70,9 +69,9 @@ public class DAOController {
 			xs[i]=Double.toString(pts.get(i).getX());
 			if(xs[i].length()>5)
 				xs[i]=xs[i].substring(0, 4);
-			
+
 		}
-		return xs;	
+		return xs;
 	}
 	public static String[] getYs(String id){
 		Figure figure = searchFigure(id);
@@ -99,6 +98,6 @@ public class DAOController {
 	public static String getnumPoints(String id){
 		Figure figure = searchFigure(id);
 		return Integer.toString(figure.numPoints());
-	}
+	}*/
 
 }

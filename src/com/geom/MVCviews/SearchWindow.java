@@ -103,6 +103,12 @@ public class SearchWindow extends JInternalFrame implements Observer{
 		getContentPane().setLayout(groupLayout);
 		
 	}
+
+	/**
+	 * Triggered once the model is updated
+	 * @param o
+	 * @param arg
+	 */
 	public void update(Observable o, Object arg) {
 		this.comboBox.setModel(new SpinnerListModel(((Model)o).getListKeys()));
 		textField.setText(((Model)o).getiDFigure());

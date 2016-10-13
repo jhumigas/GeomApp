@@ -14,9 +14,10 @@ import java.awt.geom.GeneralPath;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 /**
- * Implements the 'Board' where the geometric shapes is drawn 
- * The user can select, set or delete a point
+ * Implements the 'Board' where the geometric shapes are drawn.
+ * The user can select, set or delete a point.
  * The Shape is updated every time a point is added, reset or deleted
+ *
  * Built with WindowBuilder
  * @author Dasha
  *
@@ -35,7 +36,7 @@ public class Board extends JPanel implements MouseListener{
 		this.figure=new Figure();
 	}
 	/**
-	 * Setting coordinates for the Board's repere
+	 * Setting coordinates for the Board's frame
 	 * @param x
 	 * @param y
 	 */

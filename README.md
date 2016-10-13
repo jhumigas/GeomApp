@@ -2,7 +2,10 @@
 
 A Java application to draw basic geometric shapes. Using the interface, the user is able to precise points coordinates and the app will get the distance, area and type of figure.
 
-This project was coded using Eclispe IDE. In order to run the source code, open with eclipse and run src/Main.java. 
+This project was coded using Eclipse IDE. In order to run the source code, open with eclipse and run src/Main.java.
+
+
+![alt GeomAppPreview](https://raw.githubusercontent.com/jhumigas/GeomApp/geo2/images/Screenshot.png)
 
 ## Overview of the architecture
 
@@ -52,7 +55,7 @@ The Relational model is described here :
   * num_Length : Number of the segment
 * **Point**
   * id : Primary key 
-  * x : absissa of the point (int)
+  * x : abscissa of the point (int)
   * y : ordinate of the point (int)
   * id_figure : id of the figure to which the figure belongs too (int)
   * num_point : Number of the point (int)

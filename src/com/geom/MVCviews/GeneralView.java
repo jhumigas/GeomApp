@@ -33,7 +33,9 @@ import com.geom.model.Figure;
  */
 public class GeneralView extends JFrame implements Observer{
 
-
+	/**
+	 * Elements of the interface
+	 */
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private JTextField textX,textY,textType,textPerimeter,textArea;
@@ -147,7 +149,10 @@ public class GeneralView extends JFrame implements Observer{
 		setResizable(false);
 		initComponent();
 	}
-	
+
+	/**
+	 * Initiates all the displayed components
+	 */
 	public void initComponent(){
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 605, 455);
@@ -318,6 +323,12 @@ public class GeneralView extends JFrame implements Observer{
 		);
 		contentPane.setLayout(gl_contentPane);
 	}
+
+	/**
+	 * Triggered once the model changes
+	 * @param o Observable
+	 * @param arg
+	 */
 	@Override
 	public void update(Observable o, Object arg) {
 		Figure figure = ((Model)o).getFigureDrew(this.board.getWidth()/2, this.board.getHeight()/2);

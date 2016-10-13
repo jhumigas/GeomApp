@@ -8,7 +8,7 @@ import com.geom.database.DAOFactory;
 import com.geom.database.FigureDAO;
 import com.geom.model.Figure;
 /**
- * 
+ * Used to manage the user's input from the terminal if used
  * @author Dasha
  *
  */
