@@ -5,7 +5,7 @@ import java.sql.Statement;
 
 /**
  * This class sets the connection to the database.
- * Pay attention to the database driver. Here a MySQL database was used
+ * Pay attention to the database driver. Here a SQLite database was used
  * @author Dasha
  *
  */
@@ -54,6 +54,12 @@ public class GeomAppConnection {
 		}*/
 	}
 
+	/**
+	 * Test if the Figure table is present in the database
+	 * If it not present it will create the whole database.
+	 * @param conn A SQL connection to the database
+	 * @return true
+	 */
 	private static boolean testDatabase(java.sql.Connection conn){
 		Statement statement = null;
 
@@ -63,6 +69,8 @@ public class GeomAppConnection {
 			e.printStackTrace();
 		}
 
+		// Try to find the Figure table
+		// If it not
 		try {
 			statement.executeQuery("SELECT * FROM Figure");
 		} catch (SQLException e) {

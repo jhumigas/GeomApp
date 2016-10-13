@@ -2,7 +2,7 @@ package com.geom.model;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 /**
- * Implements convex quadrilateral shapes :  any line drawn through the polygon (and not tangent to an edge or corner) meets its boundary exactly twice.
+ * Implements convex quadrilateral shapes models:  any line drawn through the polygon (and not tangent to an edge or corner) meets its boundary exactly twice.
  * @author Dasha
  *
  */

@@ -23,7 +23,7 @@ import com.geom.model.Figure;
  * @author Dasha
  *
  */
-public class FigureDAO extends DAO<Figure> {
+public class FigureDAO extends DAO<Figure> implements DAOInterface<Figure>{
 
 	/**
 	 * Sets the connection used to access to the tables
@@ -33,10 +33,11 @@ public class FigureDAO extends DAO<Figure> {
 		super(conn);
 		// TODO Auto-generated constructor stub
 	}
-	@Override
+
 	/**
 	 * Creates a figure in the database
 	 */
+	@Override
 	public boolean create(Figure figure) {
 		String query = "INSERT INTO Figure(type,perimeter,area) VALUES ('"+figure.perimeter()+"','"+figure.perimeter()+"', '"+figure.area()+"');";
 		try{
@@ -49,6 +50,7 @@ public class FigureDAO extends DAO<Figure> {
 	/**
 	 * Saves a figure in the database and its components (lengths, points)
 	 */
+	@Override
 	public boolean save(Figure figure){
 		String query = "INSERT INTO Figure(type,perimeter,area) VALUES ('"+figure.getType()+"','"+figure.perimeter()+"', '"+figure.area()+"');";
 		int id_figure = 0;
@@ -65,6 +67,12 @@ public class FigureDAO extends DAO<Figure> {
 		new Point2DDAO(this.connect).save(figure.getPoints(), id_figure);
 		return true;
 	}
+
+	@Override
+	public boolean save(Figure obj, int id_figure, int num) {
+		return false;
+	}
+
 	/**
 	 * Gets the key of the last figure saved in the database
 	 * Same method as save but returns the keys
@@ -98,10 +106,11 @@ public class FigureDAO extends DAO<Figure> {
 		// TODO Auto-generated method stub
 		return false;
 	}
-	@Override
+
 	/**
 	 * Gets a figure if the id is provided
 	 */
+	@Override
 	public Figure find(int id) {
 		double x = 0;
 		double y = 0;
@@ -122,11 +131,12 @@ public class FigureDAO extends DAO<Figure> {
 		}
 		return Factory.gfigure(points);
 	}
-	@Override
+
 	/**
 	 * Print the 'Figure' table in the console
 	 */
-	public void afficher() {
+	@Override
+	public void show() {
 		try {
            ResultSet resultSet = this.connect.createStatement().executeQuery("SELECT * FROM Figure");
            ResultSetMetaData metaData = resultSet.getMetaData();
@@ -149,7 +159,8 @@ public class FigureDAO extends DAO<Figure> {
 		// TODO Auto-generated method stub
 		
 	}
-	public String[][] sortir() {
+
+	public String[][] dump() {
 		String table [][]=new String [150][4];
 		try {
            ResultSet resultSet = this.connect.createStatement().executeQuery("SELECT * FROM Figure");

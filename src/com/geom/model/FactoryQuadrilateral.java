@@ -2,14 +2,17 @@ package com.geom.model;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 /**
- * Handles the creation of quadrilateral shapes
+ * Handles the creation of quadrilateral shapes.
+ * This class mainly checks the relations between the sides to identify a given type
+ * of Quadrilateral. For instance, a Trapezoid has two sides that are parallel
+ * whereas a Rhombus has its sides equal two-by-two in measure.
  * @author Dasha
  *
  */
 public class FactoryQuadrilateral {
 	
 	public static Figure gfigure(ArrayList<Point2D> parameters){
-		Factory.rejectALinedPoint(parameters);
+		// Check if the Quadrilateral has no sides that cross each other
 		if(isConvexQuad(parameters)){
 			if (Factory.hasEqualSides(parameters) && Factory.hasRightAngle(parameters)){
 				return new Square(parameters);
@@ -31,33 +34,35 @@ public class FactoryQuadrilateral {
 		
 	}
 	/**
-	 * Verifies if a quadrilateral shape is trapezois i.e there are two segment that are parallel 
-	 * Uses the fact that the sum of two consecutive angles is equal to 180 degrees hence their sin are equal
+	 * Verifies if a quadrilateral shape is a trapezoid i.e there are two sides that are parallel.
+	 * Uses the fact that if the sum of two consecutive angles are equal to 180 degrees, their sine are equal.
+	 *
 	 * @param points is an ArrayList of points
-	 * @return true if the shape is trapezois
+	 * @return true if the shape is trapezoid
 	 */
 	public static boolean isTrapezoid(ArrayList<Point2D> points){
 
 		double sin []=Factory.sins(points);
-		if ((sin[0]==sin[1])||sin[1]==sin[2]) //si deux angles sont supplémentaires
+		if ((sin[0]==sin[1])||sin[1]==sin[2]) // two angles are supplementary
 			return true;
 		return false;
 	}
 	/**
-	 * Verifies if a quadrilateral shape has two segments that have the same length
-	 * @param points is an ArrayList of points
-	 * @return
+	 * Verifies if a quadrilateral shape has two sides that are equal.
+	 *
+	 * @param points is an ArrayList of points.
+	 * @return true if two opposing sides have the same length
 	 */
 	public static boolean isParallelogram(ArrayList<Point2D>points){
-		//verifier si les cotes deux à deux ont la meme Length
+		// Check if two side have the same length
 		if (points.get(0).distance(points.get(1)) == points.get(2).distance(points.get(3)))
 				return true;
 		return false;
 	}
 	/**
-	 * Verifies if the shape is convex i.e if two segments cross each other
-	 * @param points
-	 * @return
+	 * Verifies if the shape is convex i.e if two sides cross each other.
+	 * @param points ArrayList of the quadrilateral points.
+	 * @return true if the quadrilateral is convex
 	 */
 	public static boolean isConvexQuad(ArrayList<Point2D> points){
 		double sin[]=Factory.sins(points);

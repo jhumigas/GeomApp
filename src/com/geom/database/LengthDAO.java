@@ -38,11 +38,12 @@ public class LengthDAO extends DAO<Double>{
 	 * 
 	 * @param l the value of a given length
 	 * @param id_figure the id of the 'Figure' to which the length belongs to
-	 * @param numero the number of the length
+	 * @param num the number of the length
 	 * @return true
 	 */
-	public boolean save(double l,int id_figure,int numero){
-		String query = "INSERT INTO Length(value,id_figure,num_length) VALUES ('"+l+"','"+id_figure+"','"+numero+"')";
+	@Override
+	public boolean save(Double l, int id_figure, int num){
+		String query = "INSERT INTO Length(value,id_figure,num_length) VALUES ('"+l+"','"+id_figure+"','"+num+"')";
 		try{
 			this.connect.createStatement().executeUpdate(query);
 			//ResultSetMetaData resultMeta = result.getMetaData();
@@ -51,16 +52,19 @@ public class LengthDAO extends DAO<Double>{
 		}
 		return true;
 	}
+
+	@Override
 	public boolean save(Double obj) {
 		return true;
 	}
+
 	/**
 	 * Saves a list of length to the database
 	 * @param lengths an array of lengths to be saved
 	 * @param id_figure the ID of the figure to which belongs the length
 	 * @return
 	 */
-	public boolean save(double [] lengths,int id_figure){
+	public boolean save(double[] lengths,int id_figure){
 		for(int i =0; i<lengths.length;i++)
 			save(lengths[i],id_figure,i);
 		return true;
@@ -102,7 +106,8 @@ public class LengthDAO extends DAO<Double>{
 	/**
 	 *  Prints the TABLE 'Length' in the console
 	 */
-	public void afficher() {
+	@Override
+	public void show() {
 		try {
            ResultSet resultSet = this.connect.createStatement().executeQuery("SELECT * FROM Length");
            ResultSetMetaData metaData = resultSet.getMetaData();
@@ -122,11 +127,5 @@ public class LengthDAO extends DAO<Double>{
 			e.printStackTrace();
 		}
 		
-	}
-
-	@Override
-	public String[][] sortir() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 }

@@ -2,7 +2,7 @@ package com.geom.model;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 /**
- * Handles the creation of polygonal shapes
+ * Handles the creation of polygonal shapes.
  * @author Dasha
  *
  */

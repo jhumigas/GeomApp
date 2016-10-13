@@ -2,7 +2,8 @@ package com.geom.model;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 /**
- * Implements right triangle
+ * Implements right triangle.
+ * A right triangle is triangle with an angle of 90 degrees.
  * @author Dasha
  *
  */

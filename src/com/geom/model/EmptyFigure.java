@@ -4,7 +4,8 @@ import java.awt.geom.Point2D;
 import java.util.ArrayList;
 
 /**
- * Implements an empty shape
+ * Implements an empty shape model.
+ * An empty shape has no point whatsoever, and thus it's area is null.
  * @author Dasha
  *
  */

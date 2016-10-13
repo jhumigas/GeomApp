@@ -20,7 +20,7 @@ import java.util.ArrayList;
  * @author Dasha
  *
  */
-public class Point2DDAO extends DAO<Point2D> {
+public class Point2DDAO extends DAO<Point2D>{
 	/**
 	 * Sets the database connection
 	 * @param conn is the database connection
@@ -40,11 +40,12 @@ public class Point2DDAO extends DAO<Point2D> {
 	 * 
 	 * @param point2d the pair of coordinate to save to the database
 	 * @param id_figure the key of the figure to which the point belongs to
-	 * @param numero the number of the point
+	 * @param num the number of the point
 	 * @return
 	 */
-	public boolean save(Point2D point2d,int id_figure,int numero){
-		String query = "INSERT INTO Point(x,y,id_figure,num_point) VALUES ('"+point2d.getX()+"', '"+point2d.getY()+"', '"+id_figure+"','"+numero+"')";
+	@Override
+	public boolean save(Point2D point2d, int id_figure, int num){
+		String query = "INSERT INTO Point(x,y,id_figure,num_point) VALUES ('"+point2d.getX()+"', '"+point2d.getY()+"', '"+id_figure+"','"+num+"')";
 		try{
 			this.connect.createStatement().executeUpdate(query);
 		}catch(SQLException e){
@@ -101,7 +102,8 @@ public class Point2DDAO extends DAO<Point2D> {
 	/**
 	 * Prints the Database 'Point' Table in the console
 	 */
-	public void afficher() {
+	@Override
+	public void show() {
 		try {
            ResultSet resultSet = this.connect.createStatement().executeQuery("SELECT * FROM Point");
            ResultSetMetaData metaData = resultSet.getMetaData();
@@ -124,14 +126,11 @@ public class Point2DDAO extends DAO<Point2D> {
 		// TODO Auto-generated method stub
 		
 	}
+
+	@Override
 	public boolean save(Point2D obj) {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
-	@Override
-	public String[][] sortir() {
-		// TODO Auto-generated method stub
-		return null;
-	}
 }

@@ -16,7 +16,7 @@ public class IsoscelesTriangle extends Triangle{
 		super(points);
 	}
 	public String getType(){
-		return "Triangle isocele";
+		return "Isosceles triangle.";
 	}
 
 }

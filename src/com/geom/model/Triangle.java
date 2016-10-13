@@ -3,6 +3,7 @@ import java.util.ArrayList;
 import java.awt.geom.*;
 /**
  * Implements triangular shapes
+ * A tringle is a 3-sided polygon sometimes (but not very commonly). It is also called trigon.
  * @author Dasha
  *
  */

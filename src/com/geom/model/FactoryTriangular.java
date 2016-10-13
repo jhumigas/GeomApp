@@ -8,7 +8,7 @@ import java.util.ArrayList;
  */
 public class FactoryTriangular {
 	public static Figure gfigure(ArrayList<Point2D>parameters){
-		Factory.rejectALinedPoint(parameters);
+		//Factory.rejectALinedPoint(parameters);
 		if (Factory.hasEqualSides(parameters))
 			return new EquilateralTriangle(parameters);
 		else if(Factory.hasRightAngle(parameters) && isIsosceles(parameters))

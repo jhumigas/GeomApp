@@ -3,6 +3,7 @@ import java.awt.geom.Point2D;
 import java.util.ArrayList;
 /**
  * Implements right isosceles triangles
+ * It is a right triangle with the two legs (and their corresponding angles) equal.
  * @author Dasha
  *
  */
