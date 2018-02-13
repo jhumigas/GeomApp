@@ -5,10 +5,11 @@ Using an interface, the user is able to precise points coordinates and the app w
 
 It implements some design patterns very widely used such as MVC, DAO, Observer, Singleton, Factory patterns...
 
-This tiny project was coded using Eclipse IDE for an academic purpose: there is no better way to learn programming than getting his own hands dirty.
+This tiny project was coded using [IntelliJ IDEA](https://www.jetbrains.com/idea/) for an academic purpose: there is no better way to learn programming than getting his own hands dirty.
 While learning a programming language, I'd recommend building a GeomApp, a game, or other simple app in that programming language of choice to test yourself.
 
-In order to run the source code, open it with Eclipse, IntelliJ any other cool IDE and run src/Main.java.
+In order to run the source code, open it with IntelliJ and run src/Main.java.
+You might have to configure the build path for external libraries to be used, especially if you are using Eclipse which might require some configurations.
 
 
 ![alt GeomAppPreview](https://raw.githubusercontent.com/jhumigas/GeomApp/geo2/images/Screenshot.png)
@@ -17,7 +18,7 @@ In order to run the source code, open it with Eclipse, IntelliJ any other cool I
 
 No framework was used to build this project. However the MVC architecture was implemented along with several design patterns. 
 
-There three main layers corresponding to :
+There are three main layers corresponding to :
 
 * Persistence
 * Business
