@@ -18,11 +18,12 @@ You might have to configure the build path for external libraries to be used, es
 
 No framework was used to build this project. However the MVC architecture was implemented along with several design patterns. 
 
-There are three main layers corresponding to :
+There are four main layers corresponding to :
 
 * Persistence
 * Business
 * Presentation
+* Database
 
 ### Persistence 
 
@@ -56,7 +57,7 @@ The presentation layer is responsible of the user interface.
 MVCModel and MVCViews are wired together through an [Observer pattern](https://en.wikipedia.org/wiki/Observer_pattern#cite_note-jont-1) managed by the MVCController package.
 Simply put, the model is the observable object, and the view is an observer, updated each time the model is changed.
 
-## Database
+### Database
 
 This apps runs on a SQLite database. 
 But it can also be use a MySQL database, as in the previous versions. 
