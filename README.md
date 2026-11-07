@@ -8,8 +8,36 @@ It implements some design patterns very widely used such as MVC, DAO, Observer, 
 This tiny project was coded using [IntelliJ IDEA](https://www.jetbrains.com/idea/) for an academic purpose: there is no better way to learn programming than getting his own hands dirty.
 While learning a programming language, I'd recommend building a GeomApp, a game, or other simple app in that programming language of choice to test yourself.
 
-In order to run the source code, open it with IntelliJ and run src/Main.java.
-You might have to configure the build path for external libraries to be used, especially if you are using Eclipse which might require some configurations.
+## Running locally
+
+### Prerequisites
+
+The toolchain is pinned in `.tool-versions` (Java 11, Maven 3.9) for [asdf](https://asdf-vm.com/):
+
+```sh
+make setup        # = asdf plugin add java && asdf plugin add maven && asdf install
+```
+
+Not using asdf? Any JDK 11+ and Maven 3.8+ on your `PATH` will do.
+
+### Build, test, run
+
+All tasks go through Maven; the `Makefile` wraps the main ones (`make help` lists them):
+
+| Command        | What it does                                        | Maven equivalent        |
+|----------------|-----------------------------------------------------|-------------------------|
+| `make build`   | Compile the sources                                 | `mvn compile`           |
+| `make test`    | Run the unit tests (`test/`)                        | `mvn test`              |
+| `make run`     | Launch the app from sources                         | `mvn compile exec:java` |
+| `make package` | Build a runnable fat jar in `target/`               | `mvn package`           |
+| `make run-jar` | Package, then run `java -jar target/geomapp-*.jar`  |                         |
+| `make clean`   | Delete `target/`                                    | `mvn clean`             |
+| `make db`      | Create `GeomAppDatabase.db` from `GeomAppDatabase.sql` if missing (needs `sqlite3`) |  |
+| `make db-reset`| Delete and recreate `GeomAppDatabase.db` from the seed script (drops saved figures) |  |
+
+Run the app from the project root: it opens the SQLite database `GeomAppDatabase.db` from the current directory (and creates the tables if they are missing).
+
+Sources stay in `src/` and tests in `test/`, so the project still opens as-is in IntelliJ (or import it as a Maven project via `pom.xml`).
 
 
 ![alt GeomAppPreview](https://raw.githubusercontent.com/jhumigas/GeomApp/geo2/images/Screenshot.png)
@@ -59,12 +87,9 @@ Simply put, the model is the observable object, and the view is an observer, upd
 
 ### Database
 
-This apps runs on a SQLite database. 
-But it can also be use a MySQL database, as in the previous versions. 
-You can set the connection in GeomAppConnection.java by providing url, username, and password if ever you decide to switch to a MySQL database.
-Otherwise, you can leave the code as it is.
-Here the name of the database is FiguresGeometriques and you can seed is using the .sql file
-The Relational model is described here : 
+This app runs on a SQLite database stored in `GeomAppDatabase.db` (see `GeomAppConnection.java`).
+If the tables are missing, they are created on startup and seeded with one square; `GeomAppDatabase.sql` contains the same schema and seed data.
+The relational model is described here: 
 
 * **Figure** :  A figure is a geometric shape defined by 
   * id : Primary key
