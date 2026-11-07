@@ -1,10 +1,11 @@
 package com.geom.database;
 import java.awt.geom.Point2D;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * This class implements the specific layer to access the table 'Point'
@@ -21,6 +22,9 @@ import java.util.ArrayList;
  *
  */
 public class Point2DDAO extends DAO<Point2D>{
+
+	private static final String INSERT_POINT = "INSERT INTO Point(x,y,id_figure,num_point) VALUES (?,?,?,?)";
+
 	/**
 	 * Sets the database connection
 	 * @param conn is the database connection
@@ -28,108 +32,100 @@ public class Point2DDAO extends DAO<Point2D>{
 	 */
 	public Point2DDAO(Connection conn) {
 		super(conn);
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override
 	public boolean create(Point2D point) {
 		return false;
-		// TODO Auto-generated method stub
 	}
 	/**
 	 * 
 	 * @param point2d the pair of coordinate to save to the database
 	 * @param id_figure the key of the figure to which the point belongs to
 	 * @param num the number of the point
-	 * @return
+	 * @return true if the point was saved
 	 */
 	@Override
 	public boolean save(Point2D point2d, int id_figure, int num){
-		String query = "INSERT INTO Point(x,y,id_figure,num_point) VALUES ('"+point2d.getX()+"', '"+point2d.getY()+"', '"+id_figure+"','"+num+"')";
-		try{
-			this.connect.createStatement().executeUpdate(query);
-		}catch(SQLException e){
+		try {
+			insert(List.of(point2d), id_figure, num);
+			return true;
+		} catch (SQLException e) {
 			e.printStackTrace();
+			return false;
 		}
-		return true;
 	}
 	/**
 	 * Saves an array of points 
 	 * @param arrayList array of Point2D of a figure
 	 * @param id_figure the ID of the figure forms by the ArrayList of points
-	 * @return
+	 * @return true if all the points were saved
 	 */
 	public boolean save(ArrayList<Point2D> arrayList,int id_figure){
-		for(int i =0; i<arrayList.size();i++)
-			save(arrayList.get(i),id_figure,i);
-		return true;
+		try {
+			insert(arrayList, id_figure);
+			return true;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+
+	/** Inserts the points in one batch, numbered from 0. */
+	void insert(List<Point2D> points, int id_figure) throws SQLException {
+		insert(points, id_figure, 0);
+	}
+
+	private void insert(List<Point2D> points, int id_figure, int firstNum) throws SQLException {
+		try (PreparedStatement statement = this.connect.prepareStatement(INSERT_POINT)) {
+			for(int i = 0; i < points.size(); i++){
+				statement.setDouble(1, points.get(i).getX());
+				statement.setDouble(2, points.get(i).getY());
+				statement.setInt(3, id_figure);
+				statement.setInt(4, firstNum + i);
+				statement.addBatch();
+			}
+			statement.executeBatch();
+		}
 	}
 
 	@Override
 	public boolean delete(Point2D point) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
 	public boolean update(Point2D point) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
-	@Override
 	/**
 	 * Gets a specific point given its id
+	 * @return the point, or (0,0) if the key is unknown
 	 */
+	@Override
 	public Point2D.Double find(int id) {
-	    double x = 0;
-	    double y = 0;
-		try{
-			ResultSet result = this.connect.createStatement(
-					ResultSet.TYPE_SCROLL_INSENSITIVE,
-					ResultSet.CONCUR_READ_ONLY).executeQuery("SELECT * FROM Point WHERE id="+id);
-			//ResultSetMetaData resultMeta = result.getMetaData();
-			result.first();
-			if(result.next()){
-				x = (double) result.getObject("x");
-				y = (double) result.getObject("y");
+		try (PreparedStatement statement = this.connect.prepareStatement("SELECT x, y FROM Point WHERE id = ?")) {
+			statement.setInt(1, id);
+			try (ResultSet result = statement.executeQuery()) {
+				if(result.next())
+					return new Point2D.Double(result.getDouble("x"), result.getDouble("y"));
 			}
-		}catch(SQLException e){
+		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return new Point2D.Double(x, y);
+		return new Point2D.Double(0, 0);
 	}
 	/**
 	 * Prints the Database 'Point' Table in the console
 	 */
 	@Override
 	public void show() {
-		try {
-           ResultSet resultSet = this.connect.createStatement().executeQuery("SELECT * FROM Point");
-           ResultSetMetaData metaData = resultSet.getMetaData();
-           for(int i = 1;i<metaData.getColumnCount();i++)
-        	   System.out.print("\t" + metaData.getColumnName(i).toUpperCase() + "\t *");
-           
-           System.out.println("\n**************************************************************************************");
-           
-           while(resultSet.next()){         
-               for(int i = 1; i <= metaData.getColumnCount(); i++)
-                 System.out.print("\t" + resultSet.getObject(i).toString() + "\t |");
-                   
-               System.out.println("\n----------------------------------------------------------------------------------");
-           }
-             resultSet.close();    
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		// TODO Auto-generated method stub
-		
+		printTable("Point");
 	}
 
 	@Override
 	public boolean save(Point2D obj) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 

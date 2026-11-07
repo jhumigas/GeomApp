@@ -1,7 +1,7 @@
 package com.geom.database;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 
 /**
@@ -19,6 +19,8 @@ import java.sql.SQLException;
  */
 public class LengthDAO extends DAO<Double>{
 
+	private static final String INSERT_LENGTH = "INSERT INTO Length(value,id_figure,num_length) VALUES (?,?,?)";
+
 	/**
 	 * Sets the database connection
 	 * @param conn is the database connection
@@ -26,12 +28,10 @@ public class LengthDAO extends DAO<Double>{
 	 */
 	public LengthDAO(Connection conn) {
 		super(conn);
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override
 	public boolean create(Double obj) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 	/**
@@ -39,93 +39,89 @@ public class LengthDAO extends DAO<Double>{
 	 * @param l the value of a given length
 	 * @param id_figure the id of the 'Figure' to which the length belongs to
 	 * @param num the number of the length
-	 * @return true
+	 * @return true if the length was saved
 	 */
 	@Override
 	public boolean save(Double l, int id_figure, int num){
-		String query = "INSERT INTO Length(value,id_figure,num_length) VALUES ('"+l+"','"+id_figure+"','"+num+"')";
-		try{
-			this.connect.createStatement().executeUpdate(query);
-			//ResultSetMetaData resultMeta = result.getMetaData();
-		}catch(SQLException e){
+		try {
+			insert(new double[]{l}, id_figure, num);
+			return true;
+		} catch (SQLException e) {
 			e.printStackTrace();
+			return false;
 		}
-		return true;
 	}
 
 	@Override
 	public boolean save(Double obj) {
-		return true;
+		return false;
 	}
 
 	/**
 	 * Saves a list of length to the database
 	 * @param lengths an array of lengths to be saved
 	 * @param id_figure the ID of the figure to which belongs the length
-	 * @return
+	 * @return true if all the lengths were saved
 	 */
 	public boolean save(double[] lengths,int id_figure){
-		for(int i =0; i<lengths.length;i++)
-			save(lengths[i],id_figure,i);
-		return true;
+		try {
+			insert(lengths, id_figure);
+			return true;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+
+	/** Inserts the lengths in one batch, numbered from 0. */
+	void insert(double[] lengths, int id_figure) throws SQLException {
+		insert(lengths, id_figure, 0);
+	}
+
+	private void insert(double[] lengths, int id_figure, int firstNum) throws SQLException {
+		try (PreparedStatement statement = this.connect.prepareStatement(INSERT_LENGTH)) {
+			for(int i = 0; i < lengths.length; i++){
+				statement.setDouble(1, lengths[i]);
+				statement.setInt(2, id_figure);
+				statement.setInt(3, firstNum + i);
+				statement.addBatch();
+			}
+			statement.executeBatch();
+		}
 	}
 
 	@Override
 	public boolean delete(Double obj) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
 	public boolean update(Double obj) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
-	@Override
 	/**
 	 * retrieves a length provided its key
+	 * @return the value of the length, or 0 if the key is unknown
 	 */
+	@Override
 	public Double find(int id) {
-		// TODO Auto-generated method stub
-		Double length = (double) 0;
-		try{
-			ResultSet result = this.connect.createStatement(
-					ResultSet.TYPE_SCROLL_INSENSITIVE,
-					ResultSet.CONCUR_READ_ONLY).executeQuery("SELECT * FROM Length WHERE id="+id);
-			//ResultSetMetaData resultMeta = result.getMetaData();
-			result.first();
-			if(result.next()){
-				length= (Double) result.getObject("x");
+		try (PreparedStatement statement = this.connect.prepareStatement("SELECT value FROM Length WHERE id = ?")) {
+			statement.setInt(1, id);
+			try (ResultSet result = statement.executeQuery()) {
+				if(result.next())
+					return result.getDouble("value");
 			}
-		}catch(SQLException e){
+		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return length;
+		return 0.0;
 	}
 	/**
 	 *  Prints the TABLE 'Length' in the console
 	 */
 	@Override
 	public void show() {
-		try {
-           ResultSet resultSet = this.connect.createStatement().executeQuery("SELECT * FROM Length");
-           ResultSetMetaData metaData = resultSet.getMetaData();
-           for(int i = 1;i<metaData.getColumnCount();i++)
-        	   System.out.print("\t" + metaData.getColumnName(i).toUpperCase() + "\t *");
-           
-           System.out.println("\n**************************************************************************************");
-           
-           while(resultSet.next()){         
-               for(int i = 1; i <= metaData.getColumnCount(); i++)
-                 System.out.print("\t" + resultSet.getObject(i).toString() + "\t |");
-                   
-               System.out.println("\n----------------------------------------------------------------------------------");
-           }
-             resultSet.close();    
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		
+		printTable("Length");
 	}
 }

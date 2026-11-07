@@ -1,11 +1,13 @@
 package com.geom.database;
 import java.awt.geom.Point2D;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.List;
 
 import com.geom.model.Factory;
 import com.geom.model.Figure;
@@ -25,47 +27,57 @@ import com.geom.model.Figure;
  */
 public class FigureDAO extends DAO<Figure> implements DAOInterface<Figure>{
 
+	private static final String INSERT_FIGURE = "INSERT INTO Figure(type,perimeter,area) VALUES (?,?,?)";
+	private static final String SELECT_POINTS = "SELECT x, y FROM Point WHERE id_figure = ? ORDER BY num_point";
+
 	/**
 	 * Sets the connection used to access to the tables
 	 * @param conn
 	 */
 	public FigureDAO(Connection conn) {
 		super(conn);
-		// TODO Auto-generated constructor stub
 	}
 
 	/**
-	 * Creates a figure in the database
+	 * Inserts a row in the 'Figure' table only (no points, no lengths).
+	 * @return the generated key of the figure
+	 */
+	private int insertFigure(Figure figure) throws SQLException {
+		try (PreparedStatement statement = this.connect.prepareStatement(INSERT_FIGURE, Statement.RETURN_GENERATED_KEYS)) {
+			statement.setString(1, figure.getType());
+			statement.setDouble(2, figure.perimeter());
+			statement.setDouble(3, figure.area());
+			statement.executeUpdate();
+			try (ResultSet keys = statement.getGeneratedKeys()) {
+				if(!keys.next())
+					throw new SQLException("No key generated for figure " + figure.getType());
+				return keys.getInt(1);
+			}
+		}
+	}
+
+	/**
+	 * Creates a figure in the database ('Figure' table only)
+	 * @return true if the figure was inserted
 	 */
 	@Override
 	public boolean create(Figure figure) {
-		String query = "INSERT INTO Figure(type,perimeter,area) VALUES ('"+figure.perimeter()+"','"+figure.perimeter()+"', '"+figure.area()+"');";
-		try{
-			this.connect.createStatement().executeUpdate(query);
-		}catch(SQLException e){
+		try {
+			insertFigure(figure);
+			return true;
+		} catch (SQLException e) {
 			e.printStackTrace();
+			return false;
 		}
-		return true;
 	}
+
 	/**
 	 * Saves a figure in the database and its components (lengths, points)
+	 * @return true if the figure was saved
 	 */
 	@Override
 	public boolean save(Figure figure){
-		String query = "INSERT INTO Figure(type,perimeter,area) VALUES ('"+figure.getType()+"','"+figure.perimeter()+"', '"+figure.area()+"');";
-		int id_figure = 0;
-		try{
-			Statement state = this.connect.createStatement();
-			state.executeUpdate(query,Statement.RETURN_GENERATED_KEYS);
-			ResultSet res = state.getGeneratedKeys();
-			res.next();
-			id_figure = res.getInt(1);
-		}catch(SQLException e){
-			e.printStackTrace();
-		}
-		new LengthDAO(this.connect).save(figure.lengths(), id_figure);
-		new Point2DDAO(this.connect).save(figure.getPoints(), id_figure);
-		return true;
+		return returnLastKey(figure) > 0;
 	}
 
 	@Override
@@ -74,60 +86,57 @@ public class FigureDAO extends DAO<Figure> implements DAOInterface<Figure>{
 	}
 
 	/**
-	 * Gets the key of the last figure saved in the database
-	 * Same method as save but returns the keys
-	 * @param figure
-	 * @return key if the saved figure
+	 * Saves a figure with its lengths and points, in a single transaction,
+	 * and returns its key.
+	 * @param figure the figure to save
+	 * @return key of the saved figure, or 0 if nothing was saved
 	 */
 	public int returnLastKey(Figure figure){
-		String query = "INSERT INTO Figure(type,perimeter,area) VALUES ('"+figure.getType()+"','"+figure.perimeter()+"', '"+figure.area()+"');";
-		int id_figure = 0;
-		try{
-			Statement state = this.connect.createStatement();
-			state.executeUpdate(query);
-			//state.executeUpdate(query,Statement.RETURN_GENERATED_KEYS);
-			ResultSet res = state.getGeneratedKeys();
-			res.next();
-			id_figure = res.getInt(1);
-		}catch(SQLException e){
+		try {
+			boolean autoCommit = this.connect.getAutoCommit();
+			this.connect.setAutoCommit(false);
+			try {
+				int id_figure = insertFigure(figure);
+				new LengthDAO(this.connect).insert(figure.lengths(), id_figure);
+				new Point2DDAO(this.connect).insert(figure.getPoints(), id_figure);
+				this.connect.commit();
+				return id_figure;
+			} catch (SQLException e) {
+				this.connect.rollback();
+				throw e;
+			} finally {
+				this.connect.setAutoCommit(autoCommit);
+			}
+		} catch (SQLException e) {
 			e.printStackTrace();
+			return 0;
 		}
-		new LengthDAO(this.connect).save(figure.lengths(), id_figure);
-		new Point2DDAO(this.connect).save(figure.getPoints(), id_figure);
-		return id_figure;	
 	}
 	@Override
 	public boolean delete(Figure figure) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 	@Override
 	public boolean update(Figure figure) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	/**
 	 * Gets a figure if the id is provided
+	 * @return the figure rebuilt from its points (an EmptyFigure if the id is unknown)
 	 */
 	@Override
 	public Figure find(int id) {
-		double x = 0;
-		double y = 0;
-		ArrayList<Point2D>points = new ArrayList<Point2D>();
-		try{
-			ResultSet result = this.connect.createStatement(
-					//ResultSet.TYPE_SCROLL_INSENSITIVE,
-					//ResultSet.CONCUR_READ_ONLY
-			).executeQuery("SELECT * FROM Point WHERE id_figure="+id);
-			while(result.next()){
-				x = (double) result.getObject("x");
-				y = (double) result.getObject("y");
-				points.add(new Point2D.Double(x,y));	
+		ArrayList<Point2D> points = new ArrayList<Point2D>();
+		try (PreparedStatement statement = this.connect.prepareStatement(SELECT_POINTS)) {
+			statement.setInt(1, id);
+			try (ResultSet result = statement.executeQuery()) {
+				while(result.next()){
+					points.add(new Point2D.Double(result.getDouble("x"), result.getDouble("y")));
+				}
 			}
-		}catch(SQLException e){
-			//e.printStackTrace();
-			System.out.println("Introuvable");
+		} catch (SQLException e) {
+			e.printStackTrace();
 		}
 		return Factory.gfigure(points);
 	}
@@ -137,48 +146,26 @@ public class FigureDAO extends DAO<Figure> implements DAOInterface<Figure>{
 	 */
 	@Override
 	public void show() {
-		try {
-           ResultSet resultSet = this.connect.createStatement().executeQuery("SELECT * FROM Figure");
-           ResultSetMetaData metaData = resultSet.getMetaData();
-           for(int i = 1;i<metaData.getColumnCount();i++)
-        	   System.out.print("\t" + metaData.getColumnName(i).toUpperCase() + "\t *");
-           
-           System.out.println("\n**************************************************************************************");
-           
-           while(resultSet.next()){         
-               for(int i = 1; i <= metaData.getColumnCount(); i++)
-                 System.out.print("\t" + resultSet.getObject(i).toString() + "\t |");
-                   
-               System.out.println("\n----------------------------------------------------------------------------------");
-           }
-             resultSet.close();    
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		// TODO Auto-generated method stub
-		
+		printTable("Figure");
 	}
 
+	/**
+	 * @return every row of the 'Figure' table as strings (id, type, perimeter, area)
+	 */
 	public String[][] dump() {
-		String table [][]=new String [150][4];
-		try {
-           ResultSet resultSet = this.connect.createStatement().executeQuery("SELECT * FROM Figure");
-           ResultSetMetaData metaData = resultSet.getMetaData();
-           //for(int i = 1;i<metaData.getColumnCount();i++)
-        	   //table[0][i]=metaData.getColumnName(i).toUpperCase();
-           int j = 0;
-           while(resultSet.next()){         
-               for(int i = 1; i <= metaData.getColumnCount(); i++)
-            	   table[j][i-1]= resultSet.getObject(i).toString();
-               j++;
-           }
-             resultSet.close();    
+		List<String[]> rows = new ArrayList<String[]>();
+		try (PreparedStatement statement = this.connect.prepareStatement("SELECT * FROM Figure ORDER BY id");
+		     ResultSet resultSet = statement.executeQuery()) {
+			ResultSetMetaData metaData = resultSet.getMetaData();
+			while(resultSet.next()){
+				String[] row = new String[metaData.getColumnCount()];
+				for(int i = 1; i <= metaData.getColumnCount(); i++)
+					row[i-1] = String.valueOf(resultSet.getObject(i));
+				rows.add(row);
+			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return table;
-		// TODO Auto-generated method stub
+		return rows.toArray(new String[0][]);
 	}
 }

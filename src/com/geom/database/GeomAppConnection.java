@@ -4,22 +4,15 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 /**
- * This class sets the connection to the database.
- * Pay attention to the database driver. Here a SQLite database was used
+ * This class sets the connection to the SQLite database.
  * @author Dasha
  *
  */
 public class GeomAppConnection {
 	/**
-	 * <ul>
-	 * <li>url to the database</li>
-	 * <li>user and password should be setted according to provided informations</li>
-	 * </ul>
+	 * JDBC url of the SQLite database file, resolved relative to the working directory.
 	 */
-	//private String url ="jdbc:mysql://localhost:8889/FiguresGeometriques";
 	private String url = "jdbc:sqlite:GeomAppDatabase.db";
-    private String user="root";
-    private String password="root";
 	private static java.sql.Connection conn;
 	
 	/**
@@ -35,23 +28,6 @@ public class GeomAppConnection {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		// Uncomment this if you want to try a mySQL Database
-		/*try {
-
-            Class.forName("com.mysql.jdbc.Driver").newInstance();
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-        try {
-			conn = DriverManager.getConnection(url, user, password);
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}*/
 	}
 
 	/**
@@ -60,20 +36,15 @@ public class GeomAppConnection {
 	 * @param conn A SQL connection to the database
 	 * @return true
 	 */
-	private static boolean testDatabase(java.sql.Connection conn){
-		Statement statement = null;
-
-		try {
-			statement = conn.createStatement();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-
-		// Try to find the Figure table
-		// If it not
-		try {
-			statement.executeQuery("SELECT * FROM Figure");
-		} catch (SQLException e) {
+	static boolean testDatabase(java.sql.Connection conn){
+		try (Statement statement = conn.createStatement()) {
+			// Try to find the Figure table
+			try {
+				statement.executeQuery("SELECT * FROM Figure").close();
+				return true;
+			} catch (SQLException e) {
+				// A missing Figure table is expected on first launch: not an error.
+			}
 			String sql = "BEGIN TRANSACTION;" +
 					"CREATE TABLE Point (" +
 					"id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE," +
@@ -104,15 +75,20 @@ public class GeomAppConnection {
 					"); " +
 					"INSERT INTO Figure VALUES (1,'Square',40.0,100.0); " +
 					"COMMIT; ";
+			System.out.println("No GeomApp tables found, initializing the database...");
 			try {
 				statement.executeUpdate(sql);
+				System.out.println("Created tables and added one little square in it.");
 			} catch (SQLException e1) {
+				System.err.println("Failed to initialize the database:");
 				e1.printStackTrace();
+				return false;
 			}
+			return true;
+		} catch (SQLException e) {
 			e.printStackTrace();
-			System.out.println("Created tables and added one little square in it.");
+			return false;
 		}
-		return true;
 	}
 	/**
 	 * Sets the only connection needed

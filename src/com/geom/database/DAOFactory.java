@@ -1,10 +1,11 @@
 package com.geom.database;
 import java.awt.geom.Point2D;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-//import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Set;
 
 import com.geom.model.Figure;
 
@@ -14,43 +15,62 @@ import com.geom.model.Figure;
  *
  */
 public class DAOFactory {
-	protected static final Connection conn = GeomAppConnection.getInstance();
-	
+	/**
+	 * Tables of the GeomApp database. Table names cannot be passed as SQL parameters,
+	 * so any table name used to build a query must belong to this list.
+	 */
+	public static final Set<String> TABLES = Set.of("Figure", "Length", "Point");
+
+	private static Connection conn(){
+		return GeomAppConnection.getInstance();
+	}
+
 	/**
 	 * Instantiate FigureDAO
-	 * @return
+	 * @return a DAO for the 'Figure' table
 	 */
 	public static DAO<Figure> getFigureDAO(){
-		return new FigureDAO(conn);
+		return new FigureDAO(conn());
 	}
 	/**
 	 * Instantiate LengthDAO
-	 * @return
+	 * @return a DAO for the 'Length' table
 	 */
 	public static DAO<Double> getLengthDAO(){
-		return new LengthDAO(conn);
+		return new LengthDAO(conn());
 	}
 	/**
 	 * Instantiate Point2DDAO
-	 * @return
+	 * @return a DAO for the 'Point' table
 	 */
 	public static DAO<Point2D> getPoint2DDAO(){
-		return new Point2DDAO(conn);
+		return new Point2DDAO(conn());
 	}
-	public static ArrayList<Integer> getKeys(String TableName){
-		ArrayList<Integer> keys= new ArrayList<Integer>();
-			try {
-	           ResultSet resultSet = conn.createStatement().executeQuery("SELECT * FROM "+TableName+"");
-	           //ResultSetMetaData metaData = resultSet.getMetaData();
-	           
-	           while(resultSet.next()){         
-	                 keys.add(Integer.parseInt(resultSet.getObject(1).toString()));
-	           }
-	             resultSet.close();    
-			} catch (SQLException e) {
-				e.printStackTrace();
+
+	/**
+	 * @param tableName one of {@link #TABLES}
+	 * @return the primary keys of the table, in ascending order
+	 */
+	public static ArrayList<Integer> getKeys(String tableName){
+		return getKeys(conn(), tableName);
+	}
+
+	static ArrayList<Integer> getKeys(Connection conn, String tableName){
+		checkTable(tableName);
+		ArrayList<Integer> keys = new ArrayList<Integer>();
+		try (PreparedStatement statement = conn.prepareStatement("SELECT id FROM " + tableName + " ORDER BY id");
+		     ResultSet resultSet = statement.executeQuery()) {
+			while(resultSet.next()){
+				keys.add(resultSet.getInt(1));
 			}
-			return keys;
-			
+		} catch (SQLException e) {
+			e.printStackTrace();
 		}
+		return keys;
+	}
+
+	static void checkTable(String tableName){
+		if(!TABLES.contains(tableName))
+			throw new IllegalArgumentException("Unknown table: " + tableName);
+	}
 }
