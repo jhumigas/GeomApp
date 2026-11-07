@@ -48,7 +48,7 @@ public class GeneralController {
 		// Menu load button
 		view.getmntmLoad().addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-;
+				// Not implemented yet: figures are loaded through the search window
 				}
 				
 		});

@@ -6,7 +6,7 @@ GEOMAPP_DB ?= GeomAppDatabase.db
 DB_SQL := GeomAppDatabase.sql
 
 .DEFAULT_GOAL := help
-.PHONY: help setup build test run package run-jar clean db db-reset docs
+.PHONY: help setup build test run package run-jar clean db db-reset docs coverage lint
 
 help: ## Show available targets
 	@grep -E '^[a-zA-Z_-]+:.*?## ' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "  \033[36m%-10s\033[0m %s\n", $$1, $$2}'
@@ -30,6 +30,13 @@ package: ## Build a runnable fat jar in target/
 
 run-jar: package ## Build and run the packaged jar
 	java -Dgeomapp.db=$(GEOMAPP_DB) -jar $$(ls target/geomapp-*.jar | head -1)
+
+coverage: ## Run tests and write the coverage report to target/site/jacoco/index.html
+	$(MVN) test
+	@echo "Coverage report: target/site/jacoco/index.html"
+
+lint: ## Run Checkstyle (rules in checkstyle.xml)
+	$(MVN) checkstyle:check
 
 docs: ## Generate the Javadoc in target/reports/apidocs
 	$(MVN) javadoc:javadoc

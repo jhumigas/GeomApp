@@ -33,6 +33,8 @@ All tasks go through Maven; the `Makefile` wraps the main ones (`make help` list
 | `make run`     | Launch the app from sources                         | `mvn compile exec:java` |
 | `make package` | Build a runnable fat jar in `target/`               | `mvn package`           |
 | `make run-jar` | Package, then run `java -jar target/geomapp-*.jar`  |                         |
+| `make lint`    | Run Checkstyle (rules in `checkstyle.xml`)          | `mvn checkstyle:check`  |
+| `make coverage`| Run tests and write the JaCoCo report to `target/site/jacoco/index.html` | `mvn test` |
 | `make docs`    | Generate the Javadoc in `target/reports/apidocs`    | `mvn javadoc:javadoc`   |
 | `make clean`   | Delete `target/`                                    | `mvn clean`             |
 | `make db`      | Create `GeomAppDatabase.db` from `GeomAppDatabase.sql` if missing (needs `sqlite3`) |  |
@@ -46,7 +48,7 @@ All tasks go through Maven; the `Makefile` wraps the main ones (`make help` list
 | Log level      | `-Dgeomapp.log.level=DEBUG`                                                   | `INFO`                                  |
 | Logging config | `-Dlogback.configurationFile=<path>`                                          | `src/main/resources/logback.xml`        |
 
-The database file and its tables are created on first launch if they are missing. Logging goes through [SLF4J](https://www.slf4j.org/) with [Logback](https://logback.qos.ch/) on the console; the startup log shows which database file is used.
+The database file and its tables are created on first launch if they are missing. The file is local and not committed (it is in `.gitignore`): `GeomAppDatabase.sql` is the reference schema and seed data. Logging goes through [SLF4J](https://www.slf4j.org/) with [Logback](https://logback.qos.ch/) on the console; the startup log shows which database file is used.
 
 The project follows the standard Maven layout (`src/main/java`, `src/test/java`); IntelliJ imports it directly from `pom.xml`.
 

@@ -19,8 +19,18 @@ jobs:
           java-version: '11'
           cache: maven
 
+      - name: Lint
+        run: make lint MVN="mvn -B"
+
       - name: Test
         run: make test MVN="mvn -B"
+
+      - name: Upload coverage report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report
+          path: target/site/jacoco/
 
       - name: Package
         run: make package MVN="mvn -B -DskipTests"

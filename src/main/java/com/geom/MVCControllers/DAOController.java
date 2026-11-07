@@ -2,13 +2,9 @@ package com.geom.MVCControllers;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.awt.geom.Point2D;
-import com.geom.database.*;
-import java.util.ArrayList;
-
 import com.geom.database.DAOFactory;
+import com.geom.database.FigureDAO;
 import com.geom.model.Figure;
-import com.geom.MVCviews.Board;
 /**
  * Implements the interactions between the views and the DAO layer.
  * @author Dasha

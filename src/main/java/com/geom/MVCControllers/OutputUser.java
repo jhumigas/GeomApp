@@ -1,4 +1,6 @@
 package com.geom.MVCControllers;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
@@ -11,6 +13,7 @@ import com.geom.model.Figure;
  *
  */
 public class OutputUser {
+	private static final Logger log = LoggerFactory.getLogger(OutputUser.class);
 	public static Point2D traduction(String coordonnee){
 		// We expect the user to give the coordinate in the (x,y) format
 		// Retrieve the positions of the parenthesis and comma
@@ -23,7 +26,8 @@ public class OutputUser {
 		try{
 		x = Double.parseDouble(coordonnee.substring(par1+1, indexvirgule));
 		y = Double.parseDouble(coordonnee.substring(indexvirgule+1,par2));
-		}catch(Exception e){	
+		}catch(Exception e){
+			log.warn("Invalid coordinates '{}', using ({}, {})", coordonnee, x, y);
 		}
 		return new Point2D.Double(x, y);	
 	}

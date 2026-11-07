@@ -1,6 +1,6 @@
 package com.geom.model;
 import java.util.ArrayList;
-import java.awt.geom.*;
+import java.awt.geom.Point2D;
 /**
  * Implements triangular shapes
  * A tringle is a 3-sided polygon sometimes (but not very commonly). It is also called trigon.
