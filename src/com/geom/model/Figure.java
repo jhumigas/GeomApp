@@ -75,7 +75,8 @@ public class Figure{
 	public double[] lengths(){
 
 		switch(this.numPoints()){
-		case 0 & 1:
+		case 0:
+		case 1:
 			double lengths1[]={0};
 			return lengths1;
 		case 2:

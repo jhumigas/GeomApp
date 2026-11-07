@@ -8,7 +8,7 @@ import java.util.ArrayList;
  */
 public class FactoryPolygonal {
 	public static Figure gfigure(ArrayList<Point2D>parameters){
-		if(Factory.hasEqualSides(parameters))
+		if(Factory.hasEqualSides(parameters) && Factory.isEquiangular(parameters))
 			return new RegularPolygon(parameters);
 		else
 			return new Polygon(parameters);	

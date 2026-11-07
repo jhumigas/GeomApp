@@ -29,7 +29,7 @@ public class FactoryTriangular {
 	public static boolean isIsosceles(ArrayList<Point2D>parameters){
 		Figure figure = new Figure(parameters);
 		double lengths[]=figure.lengths();
-		if( lengths[0]==lengths [1] || lengths[1]==lengths[2] || lengths[0]==lengths[2] )
+		if( Factory.approxEqual(lengths[0], lengths[1]) || Factory.approxEqual(lengths[1], lengths[2]) || Factory.approxEqual(lengths[0], lengths[2]) )
 			return true;
 		return false;
 	}

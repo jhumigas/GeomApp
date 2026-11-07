@@ -10,6 +10,30 @@ import java.util.ArrayList;
  */
 public class Factory{
 	/**
+	 * Tolerance used when comparing floating-point values.
+	 * Coordinates, lengths and trigonometric values are doubles, so exact equality is unreliable.
+	 */
+	public static final double EPSILON = 1e-9;
+
+	/**
+	 * Compares two doubles with a tolerance relative to their magnitude.
+	 * @param a first value
+	 * @param b second value
+	 * @return true if a and b are equal within {@link #EPSILON}
+	 */
+	public static boolean approxEqual(double a, double b){
+		return Math.abs(a - b) <= EPSILON * Math.max(1.0, Math.max(Math.abs(a), Math.abs(b)));
+	}
+
+	/**
+	 * @param a a value
+	 * @return true if a is zero within {@link #EPSILON}
+	 */
+	public static boolean approxZero(double a){
+		return Math.abs(a) <= EPSILON;
+	}
+
+	/**
 	 * Generates the geometric shapes given an ArrayList of points.
 	 * The core idea is to first count the number of points then rely on specific properties
 	 * about the sides to identify more specifically which Shape to build.
@@ -54,7 +78,7 @@ public class Factory{
 		double values[] = coss(parameters);
 		boolean isRight = false;
 		for(int i=0; i<values.length; i++)
-			if(values[i]==0)
+			if(approxZero(values[i]))
 				isRight = true;
 		return isRight;
 		
@@ -70,7 +94,7 @@ public class Factory{
 		double distance = parameters.get(0).distance(parameters.get(parameters.size()-1));
 		int i = 0;
 		while(i<parameters.size()-1){
-			equi = equi && distance == parameters.get(i).distance(parameters.get(i+1)) ;
+			equi = equi && approxEqual(distance, parameters.get(i).distance(parameters.get(i+1)));
 			i++;
 		}
 		return equi;		
@@ -167,28 +191,24 @@ public class Factory{
 		return sin;
 	}
 	/**
-	 * Should delete a point aligned to two other points.
-	 * For three points p1, p2, p3, this method will compute the sine of (p2p3, p2p1)
-	 * If the sine is null, it will remove p2.
+	 * Deletes every point that lies on the segment between its two neighbours.
+	 * A point p2 between p1 and p3 is aligned when the angle (p2p3, p2p1) is a straight angle,
+	 * i.e. its sine is null and its cosine is negative.
+	 * The polygon is closed, so the first and last points are checked too.
 	 * @param points ArrayList of Points of a given geometric shape
 	 */
 	public static void rejectALinedPoint(ArrayList<Point2D>points){
-
-		//cas figures impossibles ?
-		if(points.size()>2){
-			// Array of Sines
-			double []sins= sins(points);
-			// Number of points removed
-			int k = 0;
-			// Current index of the angle considered
-
-			int i = 1;
-			while(i<sins.length-1){
-				if(sins[i]==0){
-					points.remove(i-k);
-					k++;
+		boolean removed = true;
+		while(removed && points.size()>2){
+			removed = false;
+			double[] sins = sins(points);
+			double[] coss = coss(points);
+			for(int i = 0; i<sins.length; i++){
+				if(approxZero(sins[i]) && coss[i]<0){
+					points.remove(i);
+					removed = true;
+					break;
 				}
-				i++;
 			}
 		}
 	}
@@ -204,10 +224,8 @@ public class Factory{
 		// Arrays of cosines and sines
 		double cos[]= coss(points);
 		double sin[]=sins(points);
-		int i = 1;
-		while(i<cos.length-1){
-			equi = equi && (cos[0] == cos[i] && sin[0] == sin[i]);
-			i++;
+		for(int i = 1; i<cos.length; i++){
+			equi = equi && approxEqual(cos[0], cos[i]) && approxEqual(sin[0], sin[i]);
 		}
 		return equi;
 	}
