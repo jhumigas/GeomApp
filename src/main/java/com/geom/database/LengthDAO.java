@@ -1,4 +1,6 @@
 package com.geom.database;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -18,6 +20,7 @@ import java.sql.SQLException;
  *
  */
 public class LengthDAO extends DAO<Double>{
+	private static final Logger log = LoggerFactory.getLogger(LengthDAO.class);
 
 	private static final String INSERT_LENGTH = "INSERT INTO Length(value,id_figure,num_length) VALUES (?,?,?)";
 
@@ -47,7 +50,7 @@ public class LengthDAO extends DAO<Double>{
 			insert(new double[]{l}, id_figure, num);
 			return true;
 		} catch (SQLException e) {
-			e.printStackTrace();
+			log.error("Could not save length {} of figure {}", num, id_figure, e);
 			return false;
 		}
 	}
@@ -68,7 +71,7 @@ public class LengthDAO extends DAO<Double>{
 			insert(lengths, id_figure);
 			return true;
 		} catch (SQLException e) {
-			e.printStackTrace();
+			log.error("Could not save the lengths of figure {}", id_figure, e);
 			return false;
 		}
 	}
@@ -113,7 +116,7 @@ public class LengthDAO extends DAO<Double>{
 					return result.getDouble("value");
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			log.error("Could not find length {}", id, e);
 		}
 		return 0.0;
 	}

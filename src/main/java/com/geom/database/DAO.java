@@ -1,4 +1,6 @@
 package com.geom.database;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -16,6 +18,8 @@ public abstract class DAO<T> implements DAOInterface<T>{
    * Connection to be set	
    */
   protected Connection connect = null;
+
+  private static final Logger log = LoggerFactory.getLogger(DAO.class);
 
   /**
    * Creates and Sets the connection to the database 
@@ -44,7 +48,7 @@ public abstract class DAO<T> implements DAOInterface<T>{
         System.out.println("\n----------------------------------------------------------------------------------");
       }
     } catch (SQLException e) {
-      e.printStackTrace();
+      log.error("Could not print table {}", table, e);
     }
   }
 }

@@ -1,33 +1,64 @@
 package com.geom.database;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * This class sets the connection to the SQLite database.
+ * <p>The database file is, in order of precedence:</p>
+ * <ol>
+ * <li>the {@value #DB_PATH_PROPERTY} system property, e.g. {@code java -Dgeomapp.db=/tmp/geom.db -jar ...}</li>
+ * <li>the {@value #DB_PATH_ENV} environment variable</li>
+ * <li>{@value #DEFAULT_DB_PATH}, relative to the working directory</li>
+ * </ol>
  * @author Dasha
  *
  */
 public class GeomAppConnection {
-	/**
-	 * JDBC url of the SQLite database file, resolved relative to the working directory.
-	 */
-	private String url = "jdbc:sqlite:GeomAppDatabase.db";
+	private static final Logger log = LoggerFactory.getLogger(GeomAppConnection.class);
+
+	/** System property holding the path of the database file. */
+	public static final String DB_PATH_PROPERTY = "geomapp.db";
+	/** Environment variable holding the path of the database file. */
+	public static final String DB_PATH_ENV = "GEOMAPP_DB";
+	/** Database file used when nothing else is configured. */
+	public static final String DEFAULT_DB_PATH = "GeomAppDatabase.db";
+
 	private static java.sql.Connection conn;
 	
 	/**
 	 * Creates the connection to the database
+	 * @throws IllegalStateException if the database cannot be opened
 	 */
 	private GeomAppConnection() {
+		Path path = Paths.get(dbPath()).toAbsolutePath();
+		log.info("Opening SQLite database {}", path);
 		try {
-			Class.forName("org.sqlite.JDBC");
-			conn = DriverManager.getConnection(url);
-			testDatabase(conn);
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
+			conn = DriverManager.getConnection("jdbc:sqlite:" + path);
 		} catch (SQLException e) {
-			e.printStackTrace();
+			throw new IllegalStateException("Cannot open the database " + path, e);
 		}
+		testDatabase(conn);
+	}
+
+	/**
+	 * @return the configured path of the database file
+	 */
+	public static String dbPath(){
+		return resolveDbPath(System.getProperty(DB_PATH_PROPERTY), System.getenv(DB_PATH_ENV));
+	}
+
+	static String resolveDbPath(String property, String env){
+		if(property != null && !property.isBlank())
+			return property;
+		if(env != null && !env.isBlank())
+			return env;
+		return DEFAULT_DB_PATH;
 	}
 
 	/**
@@ -75,18 +106,17 @@ public class GeomAppConnection {
 					"); " +
 					"INSERT INTO Figure VALUES (1,'Square',40.0,100.0); " +
 					"COMMIT; ";
-			System.out.println("No GeomApp tables found, initializing the database...");
+			log.info("No GeomApp tables found, initializing the database");
 			try {
 				statement.executeUpdate(sql);
-				System.out.println("Created tables and added one little square in it.");
+				log.info("Created the tables and added one little square");
 			} catch (SQLException e1) {
-				System.err.println("Failed to initialize the database:");
-				e1.printStackTrace();
+				log.error("Failed to initialize the database", e1);
 				return false;
 			}
 			return true;
 		} catch (SQLException e) {
-			e.printStackTrace();
+			log.error("Could not check the database schema", e);
 			return false;
 		}
 	}

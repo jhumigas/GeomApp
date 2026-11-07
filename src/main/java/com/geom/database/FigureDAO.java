@@ -1,4 +1,6 @@
 package com.geom.database;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import java.awt.geom.Point2D;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -26,6 +28,7 @@ import com.geom.model.Figure;
  *
  */
 public class FigureDAO extends DAO<Figure> implements DAOInterface<Figure>{
+	private static final Logger log = LoggerFactory.getLogger(FigureDAO.class);
 
 	private static final String INSERT_FIGURE = "INSERT INTO Figure(type,perimeter,area) VALUES (?,?,?)";
 	private static final String SELECT_POINTS = "SELECT x, y FROM Point WHERE id_figure = ? ORDER BY num_point";
@@ -66,7 +69,7 @@ public class FigureDAO extends DAO<Figure> implements DAOInterface<Figure>{
 			insertFigure(figure);
 			return true;
 		} catch (SQLException e) {
-			e.printStackTrace();
+			log.error("Could not create figure {}", figure.getType(), e);
 			return false;
 		}
 	}
@@ -108,7 +111,7 @@ public class FigureDAO extends DAO<Figure> implements DAOInterface<Figure>{
 				this.connect.setAutoCommit(autoCommit);
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			log.error("Could not save figure {}", figure.getType(), e);
 			return 0;
 		}
 	}
@@ -136,7 +139,7 @@ public class FigureDAO extends DAO<Figure> implements DAOInterface<Figure>{
 				}
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			log.error("Could not find figure {}", id, e);
 		}
 		return Factory.gfigure(points);
 	}
@@ -164,7 +167,7 @@ public class FigureDAO extends DAO<Figure> implements DAOInterface<Figure>{
 				rows.add(row);
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			log.error("Could not dump the Figure table", e);
 		}
 		return rows.toArray(new String[0][]);
 	}

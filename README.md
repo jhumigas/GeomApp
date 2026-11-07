@@ -38,7 +38,15 @@ All tasks go through Maven; the `Makefile` wraps the main ones (`make help` list
 | `make db`      | Create `GeomAppDatabase.db` from `GeomAppDatabase.sql` if missing (needs `sqlite3`) |  |
 | `make db-reset`| Delete and recreate `GeomAppDatabase.db` from the seed script (drops saved figures) |  |
 
-Run the app from the project root: it opens the SQLite database `GeomAppDatabase.db` from the current directory (and creates the tables if they are missing).
+### Configuration
+
+| Setting        | How to set it                                                                 | Default                                 |
+|----------------|-------------------------------------------------------------------------------|-----------------------------------------|
+| Database file  | `-Dgeomapp.db=<path>` (or `GEOMAPP_DB` env var); `make run GEOMAPP_DB=<path>`  | `GeomAppDatabase.db` in the working directory |
+| Log level      | `-Dgeomapp.log.level=DEBUG`                                                   | `INFO`                                  |
+| Logging config | `-Dlogback.configurationFile=<path>`                                          | `src/main/resources/logback.xml`        |
+
+The database file and its tables are created on first launch if they are missing. Logging goes through [SLF4J](https://www.slf4j.org/) with [Logback](https://logback.qos.ch/) on the console; the startup log shows which database file is used.
 
 The project follows the standard Maven layout (`src/main/java`, `src/test/java`); IntelliJ imports it directly from `pom.xml`.
 

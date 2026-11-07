@@ -1,4 +1,6 @@
 package com.geom.database;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import java.awt.geom.Point2D;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -22,6 +24,7 @@ import java.util.List;
  *
  */
 public class Point2DDAO extends DAO<Point2D>{
+	private static final Logger log = LoggerFactory.getLogger(Point2DDAO.class);
 
 	private static final String INSERT_POINT = "INSERT INTO Point(x,y,id_figure,num_point) VALUES (?,?,?,?)";
 
@@ -51,7 +54,7 @@ public class Point2DDAO extends DAO<Point2D>{
 			insert(List.of(point2d), id_figure, num);
 			return true;
 		} catch (SQLException e) {
-			e.printStackTrace();
+			log.error("Could not save point {} of figure {}", num, id_figure, e);
 			return false;
 		}
 	}
@@ -66,7 +69,7 @@ public class Point2DDAO extends DAO<Point2D>{
 			insert(arrayList, id_figure);
 			return true;
 		} catch (SQLException e) {
-			e.printStackTrace();
+			log.error("Could not save the points of figure {}", id_figure, e);
 			return false;
 		}
 	}
@@ -112,7 +115,7 @@ public class Point2DDAO extends DAO<Point2D>{
 					return new Point2D.Double(result.getDouble("x"), result.getDouble("y"));
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			log.error("Could not find point {}", id, e);
 		}
 		return new Point2D.Double(0, 0);
 	}

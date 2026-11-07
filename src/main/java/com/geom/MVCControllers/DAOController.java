@@ -1,4 +1,6 @@
 package com.geom.MVCControllers;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.awt.geom.Point2D;
 import com.geom.database.*;
@@ -13,6 +15,7 @@ import com.geom.MVCviews.Board;
  *
  */
 public class DAOController {
+	private static final Logger log = LoggerFactory.getLogger(DAOController.class);
 	/**
 	 * Finds a geometric shape in the database
 	 * Instantiates the connection to the database then gets a figure given its id
@@ -57,7 +60,7 @@ public class DAOController {
 					ls[i]=ls[i].substring(0, 4);
 		}
 		}catch(Exception e){
-			System.out.println("Hors des points");
+			log.warn("Could not format the lengths of figure {}", id, e);
 		}
 		return ls;
 	}

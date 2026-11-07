@@ -1,0 +1,15 @@
+<configuration>
+  <!-- Console logging for the app. Override with -Dlogback.configurationFile=/path/to/logback.xml -->
+  <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+    <encoder>
+      <pattern>%d{HH:mm:ss.SSS} %-5level %logger{20} - %msg%n</pattern>
+    </encoder>
+  </appender>
+
+  <!-- Set -Dgeomapp.log.level=DEBUG for more detail from the app's own classes -->
+  <logger name="com.geom" level="${geomapp.log.level:-INFO}"/>
+
+  <root level="WARN">
+    <appender-ref ref="CONSOLE"/>
+  </root>
+</configuration>

@@ -1,4 +1,6 @@
 package com.geom.database;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import java.awt.geom.Point2D;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -15,6 +17,7 @@ import com.geom.model.Figure;
  *
  */
 public class DAOFactory {
+	private static final Logger log = LoggerFactory.getLogger(DAOFactory.class);
 	/**
 	 * Tables of the GeomApp database. Table names cannot be passed as SQL parameters,
 	 * so any table name used to build a query must belong to this list.
@@ -64,7 +67,7 @@ public class DAOFactory {
 				keys.add(resultSet.getInt(1));
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			log.error("Could not read the keys of table {}", tableName, e);
 		}
 		return keys;
 	}

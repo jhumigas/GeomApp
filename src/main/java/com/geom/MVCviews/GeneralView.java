@@ -1,4 +1,6 @@
 package com.geom.MVCviews;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.awt.Color;
 import java.awt.EventQueue;
@@ -32,6 +34,7 @@ import com.geom.model.Figure;
  *
  */
 public class GeneralView extends JFrame implements Observer{
+	private static final Logger log = LoggerFactory.getLogger(GeneralView.class);
 
 	/**
 	 * Elements of the interface
@@ -136,7 +139,7 @@ public class GeneralView extends JFrame implements Observer{
 					GeneralView frame = new GeneralView();
 					frame.setVisible(true);
 				} catch (Exception e) {
-					e.printStackTrace();
+					log.error("Could not open the main window", e);
 				}
 			}
 		});
