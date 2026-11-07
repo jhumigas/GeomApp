@@ -53,7 +53,7 @@ The database file and its tables are created on first launch if they are missing
 The project follows the standard Maven layout (`src/main/java`, `src/test/java`); IntelliJ imports it directly from `pom.xml`.
 
 
-![alt GeomAppPreview](https://raw.githubusercontent.com/jhumigas/GeomApp/geo2/images/Screenshot.png)
+![alt GeomAppPreview](images/Screenshot.png)
 
 ## Overview of the architecture
 
