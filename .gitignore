@@ -161,3 +161,6 @@ target/
 
 # Generated Javadoc (make docs)
 doc/
+
+# Local SQLite database: created by `make db` or on first launch
+GeomAppDatabase.db
