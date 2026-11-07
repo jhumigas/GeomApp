@@ -158,3 +158,6 @@ Temporary Items
 .apdisk
 # Maven
 target/
+
+# Generated Javadoc (make docs)
+doc/

@@ -33,10 +33,6 @@
   </dependencies>
 
   <build>
-    <!-- Keep the existing IDE-style layout: sources in src/, tests in test/ -->
-    <sourceDirectory>src</sourceDirectory>
-    <testSourceDirectory>test</testSourceDirectory>
-
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -78,6 +74,16 @@
             </configuration>
           </execution>
         </executions>
+      </plugin>
+      <plugin>
+        <!-- mvn javadoc:javadoc generates the API docs in target/reports/apidocs -->
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <version>3.10.1</version>
+        <configuration>
+          <doclint>none</doclint>
+          <show>private</show>
+        </configuration>
       </plugin>
       <plugin>
         <!-- mvn exec:java runs the app from the project root (where GeomAppDatabase.db lives) -->

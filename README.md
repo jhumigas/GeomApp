@@ -27,17 +27,18 @@ All tasks go through Maven; the `Makefile` wraps the main ones (`make help` list
 | Command        | What it does                                        | Maven equivalent        |
 |----------------|-----------------------------------------------------|-------------------------|
 | `make build`   | Compile the sources                                 | `mvn compile`           |
-| `make test`    | Run the unit tests (`test/`)                        | `mvn test`              |
+| `make test`    | Run the unit tests (`src/test/java`)               | `mvn test`              |
 | `make run`     | Launch the app from sources                         | `mvn compile exec:java` |
 | `make package` | Build a runnable fat jar in `target/`               | `mvn package`           |
 | `make run-jar` | Package, then run `java -jar target/geomapp-*.jar`  |                         |
+| `make docs`    | Generate the Javadoc in `target/reports/apidocs`    | `mvn javadoc:javadoc`   |
 | `make clean`   | Delete `target/`                                    | `mvn clean`             |
 | `make db`      | Create `GeomAppDatabase.db` from `GeomAppDatabase.sql` if missing (needs `sqlite3`) |  |
 | `make db-reset`| Delete and recreate `GeomAppDatabase.db` from the seed script (drops saved figures) |  |
 
 Run the app from the project root: it opens the SQLite database `GeomAppDatabase.db` from the current directory (and creates the tables if they are missing).
 
-Sources stay in `src/` and tests in `test/`, so the project still opens as-is in IntelliJ (or import it as a Maven project via `pom.xml`).
+The project follows the standard Maven layout (`src/main/java`, `src/test/java`); IntelliJ imports it directly from `pom.xml`.
 
 
 ![alt GeomAppPreview](https://raw.githubusercontent.com/jhumigas/GeomApp/geo2/images/Screenshot.png)

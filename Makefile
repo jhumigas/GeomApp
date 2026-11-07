@@ -5,7 +5,7 @@ DB := GeomAppDatabase.db
 DB_SQL := GeomAppDatabase.sql
 
 .DEFAULT_GOAL := help
-.PHONY: help setup build test run package run-jar clean db db-reset
+.PHONY: help setup build test run package run-jar clean db db-reset docs
 
 help: ## Show available targets
 	@grep -E '^[a-zA-Z_-]+:.*?## ' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "  \033[36m%-10s\033[0m %s\n", $$1, $$2}'
@@ -29,6 +29,9 @@ package: ## Build a runnable fat jar in target/
 
 run-jar: package ## Build and run the packaged jar
 	java -jar $$(ls target/geomapp-*.jar | head -1)
+
+docs: ## Generate the Javadoc in target/reports/apidocs
+	$(MVN) javadoc:javadoc
 
 clean: ## Remove build output
 	$(MVN) clean
