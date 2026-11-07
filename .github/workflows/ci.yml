@@ -1,0 +1,43 @@
+name: CI
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      # Same Java major version as .tool-versions
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '11'
+          cache: maven
+
+      - name: Lint
+        run: make lint MVN="mvn -B"
+
+      - name: Test
+        run: make test MVN="mvn -B"
+
+      - name: Upload coverage report
+        if: always()
+        uses: actions/upload-artifact@v6
+        with:
+          name: coverage-report
+          path: target/site/jacoco/
+
+      - name: Package
+        run: make package MVN="mvn -B -DskipTests"
+
+      - name: Upload jar
+        uses: actions/upload-artifact@v6
+        with:
+          name: geomapp-jar
+          path: target/geomapp-*.jar
+          if-no-files-found: error

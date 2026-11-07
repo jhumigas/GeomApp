@@ -156,3 +156,11 @@ Icon
 Network Trash Folder
 Temporary Items
 .apdisk
+# Maven
+target/
+
+# Generated Javadoc (make docs)
+doc/
+
+# Local SQLite database: created by `make db` or on first launch
+GeomAppDatabase.db

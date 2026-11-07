@@ -1,0 +1,102 @@
+package com.geom.MVCControllers;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.geom.database.DAOFactory;
+import com.geom.database.FigureDAO;
+import com.geom.model.Figure;
+/**
+ * Implements the interactions between the views and the DAO layer.
+ * @author Dasha
+ *
+ */
+public class DAOController {
+	private static final Logger log = LoggerFactory.getLogger(DAOController.class);
+	/**
+	 * Finds a geometric shape in the database
+	 * Instantiates the connection to the database then gets a figure given its id
+	 * @param id is the primary key to find a 'Figure' in the database
+	 * @return a Figure i.e geometric shape given its id in the database
+	 */
+	public static Figure searchFigure(String id){
+		return DAOFactory.getFigureDAO().find(OutputUser.idSaisi(id));
+	}
+
+	/**
+	 * Perform a query to the database and returns the correspond database id
+	 * @param figure to query in the database
+	 * @return id of the figure matching the one provided in argument
+	 */
+	public static int returnLastKey(Figure figure){
+		return ((FigureDAO)DAOFactory.getFigureDAO()).returnLastKey(figure);
+	}
+
+	// Used to test the display of figure from a terminal
+	/*
+	public static Board drawSearchedFigure(String id){
+		Figure figure =searchFigure(id);
+		return new Board(figure);
+	}
+	public static void saveFigureDrawed(Figure figure){
+		DAOFactory.getFigureDAO().save(figure);
+	}
+	public static String getTypeFigure(String id){
+		Figure figure = searchFigure(id);
+		return figure.getType();
+
+	}
+	public static String[] getLengths(String id){
+		Figure figure = searchFigure(id);
+		double[]l=figure.lengths();
+		String[]ls=new String[figure.numPoints()];
+		try{
+		for(int i=0;i<l.length;i++){
+				ls[i]= Double.toString(l[i]);
+				if(ls[i].length()>5)
+					ls[i]=ls[i].substring(0, 4);
+		}
+		}catch(Exception e){
+			log.warn("Could not format the lengths of figure {}", id, e);
+		}
+		return ls;
+	}
+	public static String[] getXs(String id){
+		Figure figure = searchFigure(id);
+		ArrayList<Point2D>pts= figure.getPoints();
+		String[] xs = new String[pts.size()];
+		for( int i=0; i<xs.length;i++){
+			xs[i]=Double.toString(pts.get(i).getX());
+			if(xs[i].length()>5)
+				xs[i]=xs[i].substring(0, 4);
+
+		}
+		return xs;
+	}
+	public static String[] getYs(String id){
+		Figure figure = searchFigure(id);
+		ArrayList<Point2D>pts= figure.getPoints();
+		String[] ys = new String[pts.size()];
+		for( int i=0; i<ys.length;i++){
+			ys[i]=Double.toString(pts.get(i).getY());
+			if(ys[i].length()>5)
+				ys[i]=ys[i].substring(0, 4);
+		}
+		return ys;
+	}
+	public static String getPerimeter(String id){
+		Figure figure = searchFigure(id);
+		String p =Double.toString(figure.perimeter());
+		if(p.length()>5)
+			p=p.substring(0,4);
+		return p;
+	}
+	public static String getarea(String id){
+		Figure figure = searchFigure(id);
+		return Double.toString(figure.area());
+	}
+	public static String getnumPoints(String id){
+		Figure figure = searchFigure(id);
+		return Integer.toString(figure.numPoints());
+	}*/
+
+}
