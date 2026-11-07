@@ -1,5 +1,7 @@
 # GeomApp
 
+[![CI](https://github.com/jhumigas/GeomApp/actions/workflows/ci.yml/badge.svg)](https://github.com/jhumigas/GeomApp/actions/workflows/ci.yml)
+
 A Java application to draw basic geometric shapes.
 Using an interface, the user is able to precise points coordinates and the app will get the distance, area and type of figure.
 
