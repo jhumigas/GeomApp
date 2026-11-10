@@ -1,5 +1,7 @@
 # GeomApp
 
+[![CI](https://github.com/jhumigas/GeomApp/actions/workflows/ci.yml/badge.svg)](https://github.com/jhumigas/GeomApp/actions/workflows/ci.yml)
+
 A Java application to draw basic geometric shapes.
 Using an interface, the user is able to precise points coordinates and the app will get the distance, area and type of figure.
 
@@ -8,11 +10,50 @@ It implements some design patterns very widely used such as MVC, DAO, Observer, 
 This tiny project was coded using [IntelliJ IDEA](https://www.jetbrains.com/idea/) for an academic purpose: there is no better way to learn programming than getting his own hands dirty.
 While learning a programming language, I'd recommend building a GeomApp, a game, or other simple app in that programming language of choice to test yourself.
 
-In order to run the source code, open it with IntelliJ and run src/Main.java.
-You might have to configure the build path for external libraries to be used, especially if you are using Eclipse which might require some configurations.
+## Running locally
+
+### Prerequisites
+
+The toolchain is pinned in `.tool-versions` (Java 11, Maven 3.9) for [asdf](https://asdf-vm.com/):
+
+```sh
+make setup        # = asdf plugin add java && asdf plugin add maven && asdf install
+```
+
+Not using asdf? Any JDK 11+ and Maven 3.8+ on your `PATH` will do.
+
+### Build, test, run
+
+All tasks go through Maven; the `Makefile` wraps the main ones (`make help` lists them):
+
+| Command        | What it does                                        | Maven equivalent        |
+|----------------|-----------------------------------------------------|-------------------------|
+| `make build`   | Compile the sources                                 | `mvn compile`           |
+| `make test`    | Run the unit tests (`src/test/java`)               | `mvn test`              |
+| `make run`     | Launch the app from sources                         | `mvn compile exec:java` |
+| `make package` | Build a runnable fat jar in `target/`               | `mvn package`           |
+| `make run-jar` | Package, then run `java -jar target/geomapp-*.jar`  |                         |
+| `make lint`    | Run Checkstyle (rules in `checkstyle.xml`)          | `mvn checkstyle:check`  |
+| `make coverage`| Run tests and write the JaCoCo report to `target/site/jacoco/index.html` | `mvn test` |
+| `make docs`    | Generate the Javadoc in `target/reports/apidocs`    | `mvn javadoc:javadoc`   |
+| `make clean`   | Delete `target/`                                    | `mvn clean`             |
+| `make db`      | Create `GeomAppDatabase.db` from `GeomAppDatabase.sql` if missing (needs `sqlite3`) |  |
+| `make db-reset`| Delete and recreate `GeomAppDatabase.db` from the seed script (drops saved figures) |  |
+
+### Configuration
+
+| Setting        | How to set it                                                                 | Default                                 |
+|----------------|-------------------------------------------------------------------------------|-----------------------------------------|
+| Database file  | `-Dgeomapp.db=<path>` (or `GEOMAPP_DB` env var); `make run GEOMAPP_DB=<path>`  | `GeomAppDatabase.db` in the working directory |
+| Log level      | `-Dgeomapp.log.level=DEBUG`                                                   | `INFO`                                  |
+| Logging config | `-Dlogback.configurationFile=<path>`                                          | `src/main/resources/logback.xml`        |
+
+The database file and its tables are created on first launch if they are missing. The file is local and not committed (it is in `.gitignore`): `GeomAppDatabase.sql` is the reference schema and seed data. Logging goes through [SLF4J](https://www.slf4j.org/) with [Logback](https://logback.qos.ch/) on the console; the startup log shows which database file is used.
+
+The project follows the standard Maven layout (`src/main/java`, `src/test/java`); IntelliJ imports it directly from `pom.xml`.
 
 
-![alt GeomAppPreview](https://raw.githubusercontent.com/jhumigas/GeomApp/geo2/images/Screenshot.png)
+![alt GeomAppPreview](images/Screenshot.png)
 
 ## Overview of the architecture
 
@@ -59,12 +100,9 @@ Simply put, the model is the observable object, and the view is an observer, upd
 
 ### Database
 
-This apps runs on a SQLite database. 
-But it can also be use a MySQL database, as in the previous versions. 
-You can set the connection in GeomAppConnection.java by providing url, username, and password if ever you decide to switch to a MySQL database.
-Otherwise, you can leave the code as it is.
-Here the name of the database is FiguresGeometriques and you can seed is using the .sql file
-The Relational model is described here : 
+This app runs on a SQLite database stored in `GeomAppDatabase.db` (see `GeomAppConnection.java`).
+If the tables are missing, they are created on startup and seeded with one square; `GeomAppDatabase.sql` contains the same schema and seed data.
+The relational model is described here: 
 
 * **Figure** :  A figure is a geometric shape defined by 
   * id : Primary key
